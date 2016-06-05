@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html ng-app="ShipperApp">
+<head>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/styles.css" />
+
+    <!-- JS -->
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+    <script type="text/javascript" src="//code.angularjs.org/1.4.9/angular-route.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular-animate.min.js"></script>
+
+    <!--<link rel="icon" href="assets/images/favicon.ico" />-->
+
+    <!--<base href="/" />-->
+	<title>ShipStation Order Manager</title>
+</head>
+<body>
+    <div ng-controller="MainCtrl as mc">
+        <div ng-repeat="order in mc.orders">
+            {{order}}
+        </div>
+    </div>
+
+    <!-- AngularJS -->
+    <script type="text/javascript" src="app/app.js"></script>
+    <script type="text/javascript" src="app/services/ShipStationService.js"></script>
+    <script type="text/javascript" src="app/controllers/mainController.js"></script>
+</body>
+</html>
