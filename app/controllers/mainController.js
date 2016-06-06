@@ -1,15 +1,11 @@
-(function (){
+(function () {
 	'use strict';
 
 	var app = angular.module('ShipperApp');
 
-	app.controller('MainCtrl', ['$scope', 'ShipStation', function($scope, ShipStation){
+	app.controller('MainCtrl', ['$scope', function ($scope) {
 		var mc = this;
-		
-		ShipStation.getOrders()
-			.then(function(data){
-				mc.orders = data;
-			});
+
 
 	}]);
 

@@ -1,0 +1,25 @@
+<table class="col-lg-12 table table-striped orders-view" ng-controller="OrdersCtrl as oc">
+    <tr>
+        <th>#</th>
+        <th>Shipping To</th>
+        <th>
+            <div class="row">
+                <div class="col-lg-4">SKU</div>
+                <div class="col-lg-4">Item</div>
+                <div class="col-lg-4">Weight</div>
+            </div>
+        </th>
+    </tr>
+
+    <tr ng-repeat="order in oc.orders">
+        <td>{{ order.orderNumber }}</td>
+        <td class="text-capitalize">{{ order.shipTo.name }}</td>
+        <td>
+            <div class="row" ng-repeat="item in order.items">
+                <div class="col-lg-4">{{item.sku}}</div>
+                <div class="col-lg-4">{{item.name}}</div>
+                <div class="col-lg-4">{{item.weight.value}} {{item.weight.units}}</div>
+            </div>
+        </td>
+    </tr>
+</table>

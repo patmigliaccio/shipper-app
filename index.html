@@ -19,15 +19,24 @@
 	<title>ShipStation Order Manager</title>
 </head>
 <body>
-    <div ng-controller="MainCtrl as mc">
-        <div ng-repeat="order in mc.orders">
-            {{order}}
+<div class="col-lg-offset-2 col-lg-8 main-container" ng-controller="MainCtrl as mc">
+    <div class="col-lg-12 header">
+        <h2>ShipStation Order Manager</h2>
         </div>
+
+    <ng-view></ng-view>
+
+    <div class="col-lg-12 footer">
+        <p>GitHub <a href="https://github.com/pmigliaccio" target="_blank">@pmigliaccio</a></p>
+    </div>
     </div>
 
     <!-- AngularJS -->
     <script type="text/javascript" src="app/app.js"></script>
     <script type="text/javascript" src="app/services/ShipStationService.js"></script>
     <script type="text/javascript" src="app/controllers/mainController.js"></script>
+    <script type="text/javascript" src="app/controllers/ordersController.js"></script>
+    <script type="text/javascript" src="app/controllers/totalsController.js"></script>
+    <!-- TODO Add Auth and Login scripts -->
 </body>
 </html>

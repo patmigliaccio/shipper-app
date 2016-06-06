@@ -1,6 +1,6 @@
-(function (){
+(function () {
     'use strict';
-    var authKey = "NjMwZGVlNWYzMjRjNGQ5ZGJjMTA4NDdmODU3Y2EyYzQ6NGM1Nzg1NjNlN2ZiNDU3OThjZTZkNDFlOTZjNWFkODE=";
+    var authKey = "{{ AuthKey }}";
     
     var app = angular.module('ShipperApp');
 
@@ -14,13 +14,13 @@
         return {
             getOrders: function(){
                 return $http({
-                    url: 'https://ssapi.shipstation.com/orders',
+                    url: 'data/orders.json',
                     method: 'GET',
                     withCredentials: true,
                     headers: config
                 })
                 .then(function(response){
-                    return response.orders;
+                    return response.data.orders;
                 }, function(error) {
                     console.log(error);
                 });
