@@ -17,6 +17,7 @@
                 });
         };
 
+        //totals item weight values that have the same sku
         tc.Process = function (orders) {
             var v = {};
 
@@ -43,6 +44,8 @@
         };
 
         tc.Initialize();
+        
+        //TODO add export function that simplifies and sorts the tc.totals array
     }]);
 
 })();

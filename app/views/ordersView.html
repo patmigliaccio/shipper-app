@@ -1,4 +1,10 @@
-<table class="col-lg-12 table table-striped orders-view" ng-controller="OrdersCtrl as oc">
+<table class="col-lg-12 table table-striped orders-view">
+    <tr>
+        <th colspan="5" class="text-right">
+            <button type="button" ng-csv="oc.orders" filename="Orders_Report.csv">Export</button>
+        </th>
+    </tr>
+
     <tr>
         <th>#</th>
         <th>Shipping To</th>

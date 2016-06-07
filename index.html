@@ -12,23 +12,29 @@
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
     <script type="text/javascript" src="//code.angularjs.org/1.4.9/angular-route.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular-animate.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-sanitize.js"></script>
+    <script type="text/javascript" src="assets/libs/ng-csv.min.js"></script>
 
     <!--<link rel="icon" href="assets/images/favicon.ico" />-->
 
-    <!--<base href="/" />-->
-	<title>ShipStation Order Manager</title>
+    <base href="/ShipStation-Order-Manager/" />
+    <title>ShipStation Order Manager</title>
 </head>
 <body>
-<div class="col-lg-offset-2 col-lg-8 main-container" ng-controller="MainCtrl as mc">
-    <div class="col-lg-12 header">
-        <h2>ShipStation Order Manager</h2>
+    <div class="col-lg-offset-2 col-lg-8 main-container" ng-controller="MainCtrl as mc">
+        <div class="col-lg-12 header">
+            <h2>ShipStation Order Manager</h2>
         </div>
 
-    <ng-view></ng-view>
+        <ul class="nav nav-tabs nav-justified" ng-show="mc.pages.length">
+            <li role="presentation" ng-repeat="page in mc.pages" ng-class="{ active: mc.isActive(page.path) }"><a href="{{page.url}}">{{page.name}}</a></li>
+        </ul>
 
-    <div class="col-lg-12 footer">
-        <p>GitHub <a href="https://github.com/pmigliaccio" target="_blank">@pmigliaccio</a></p>
-    </div>
+        <ng-view></ng-view>
+
+        <div class="col-lg-12 footer">
+            <p>GitHub <a href="https://github.com/pmigliaccio" target="_blank">@pmigliaccio</a></p>
+        </div>
     </div>
 
     <!-- AngularJS -->

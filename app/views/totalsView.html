@@ -1,4 +1,10 @@
-<table class="col-lg-12 table table-striped totals-view" ng-controller="TotalsCtrl as tc">
+<table class="col-lg-12 table table-striped totals-view">
+    <tr>
+        <th colspan="2" class="text-right">
+            <button type="button" ng-csv="tc.totals" filename="Totals_Report.csv">Export</button>
+        </th>
+    </tr>
+
     <tr>
         <th>Item SKU</th>
         <th>Total Weight</th>
