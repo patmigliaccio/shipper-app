@@ -1,0 +1,36 @@
+@import "../modules/all";
+
+ul.nav {
+  margin-bottom: $spacer * 2;
+  border-bottom: 0;
+}
+
+ul.nav > li {
+  padding-right: 20px;
+
+  a {
+    font-weight: 200;
+    text-transform: uppercase;
+    color: #2f2f31;
+    background: #fff;
+    font-size: 110%;
+    letter-spacing: 0.1em;
+    padding: 3px 17px 3px 17px;
+    border: 1px solid #fff;
+    border-radius: 0;
+    -webkit-transition: all 0.3s ease 0s; /* Chrome, Opera 15+, Safari 3.1+ */
+    -ms-transition: all 0.3s ease 0s; /* IE 9 */
+    transition: all 0.3s ease 0s;
+  }
+
+  &:hover a, &.active a{
+    border: 1px solid #AAAEB4 !important;
+    color: #82858a;
+    font-weight: 200;
+    background-color: #fff;
+  }
+
+  &.active a{
+    color: #232323;
+  }
+}

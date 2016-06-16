@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('Authentication')
+    angular.module('ShipperApp')
         .controller('LoginCtrl',
             ['$scope', '$rootScope', '$location', 'AuthenticationService',
                 function ($scope, $rootScope, $location, AuthenticationService) {
@@ -13,13 +13,20 @@
                         AuthenticationService.Login($scope.username, $scope.password, function (response) {
                             if (response.success) {
                                 AuthenticationService.SetCredentials($scope.username, $scope.password);
-                                $location.path('/');
+                                $location.path('/orders');
+                                $scope.error = null;
+                                $scope.dataLoading = false;
                             } else {
                                 $scope.error = response.message;
                                 $scope.dataLoading = false;
                             }
                         });
                     };
-                }]);
 
+                    //TODO Implement logout
+                    $scope.logout = function () {
+                        AuthenticationService.ClearCredentials();
+                    };
+
+                }]);
 })();

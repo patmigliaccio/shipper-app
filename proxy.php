@@ -49,8 +49,11 @@ if ( !$url ) {
   curl_setopt( $ch, CURLOPT_HEADER, true );
   curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
 
-  curl_setopt($ch,CURLOPT_HTTPHEADER,array('Authorization: Basic {{ AuthKey }}')); //TODO Parametrize APIKey
-  
+  // Adds Authorization header
+  if ( isset($_SERVER['HTTP_AUTHORIZATION'])) {
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: '. $_SERVER['HTTP_AUTHORIZATION']) );
+  }
+
   curl_setopt( $ch, CURLOPT_USERAGENT, $_GET['user_agent'] ? $_GET['user_agent'] : $_SERVER['HTTP_USER_AGENT'] );
 
   list( $header, $contents ) = preg_split( '/([\r\n][\r\n])\\1/', curl_exec( $ch ), 2 );

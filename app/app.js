@@ -1,6 +1,10 @@
-angular.module('ShipperApp', ['ngRoute', 'ngSanitize', 'ngCsv'])
+angular.module('ShipperApp', ['Authentication', 'ngRoute', 'ngSanitize', 'ngCsv'])
     .config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
         $routeProvider
+            .when('/login', {
+                templateUrl: 'app/views/loginView.html',
+                controller: 'LoginCtrl'
+            })
             .when('/orders', {
                 templateUrl: 'app/views/ordersView.html',
                 controller: 'OrdersCtrl',
@@ -11,7 +15,7 @@ angular.module('ShipperApp', ['ngRoute', 'ngSanitize', 'ngCsv'])
                 controller: 'TotalsCtrl',
                 controllerAs: 'tc'
             })
-            .otherwise('/orders');
+            .otherwise('/login');
 
         //TODO get html5mode working
         $locationProvider.html5Mode(false).hashPrefix('!');
@@ -20,7 +24,7 @@ angular.module('ShipperApp', ['ngRoute', 'ngSanitize', 'ngCsv'])
         $httpProvider.interceptors.push(function ($q) {
             return {
                 'request': function (config) {
-                    if (!~config.url.indexOf('/views/')){  //ignores ngRoute requests
+                    if (!~config.url.indexOf('views/') && !~config.url.indexOf('data/')){  //ignores ngRoute requests and static data files
                         config.url = 'proxy.php?url=' + config.url + '&mode=native';
                     }
 
@@ -29,6 +33,10 @@ angular.module('ShipperApp', ['ngRoute', 'ngSanitize', 'ngCsv'])
 
             }
         });
+
+        $httpProvider.defaults.headers.common['Accept'] = 'application/json, text/javascript, */*; q=0.01';
+        $httpProvider.defaults.headers.common['Content-Type'] = 'application/json';
+
     }]);
 
 angular.module('Authentication', []);
