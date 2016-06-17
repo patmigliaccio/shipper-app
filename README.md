@@ -6,7 +6,8 @@ Built with AngularJS.
 
 ## Acknowledgments
 
-* ShipStation / [http://www.shipstation.com](http://www.shipstation.com)
-* Simple PHP Proxy / [https://github.com/cowboy/php-simple-proxy](https://github.com/cowboy/php-simple-proxy)
-* ngCSV / [https://github.com/asafdav/ng-csv](https://github.com/asafdav/ng-csv)
-* AngularJS Basic HTTP Authentication / [https://github.com/cornflourblue/angular-authentication-example](https://github.com/cornflourblue/angular-authentication-example)
+* ShipStation Developer API / [ShipStation](http://www.shipstation.com/developer-api/)
+* Simple PHP Proxy / [@cowboy](https://github.com/cowboy/php-simple-proxy)
+* ngCSV / [@asafdav](https://github.com/asafdav/ng-csv)
+* AngularJS Basic HTTP Authentication / [@cornflourblue](https://github.com/cornflourblue/angular-authentication-example)
+* Angular Modal Service / [@dwmkerr](https://github.com/dwmkerr/angular-modal-service)

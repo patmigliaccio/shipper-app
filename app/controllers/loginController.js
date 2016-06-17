@@ -1,32 +1,58 @@
 (function () {
     'use strict';
 
-    angular.module('ShipperApp')
-        .controller('LoginCtrl',
-            ['$scope', '$rootScope', '$location', 'AuthenticationService',
-                function ($scope, $rootScope, $location, AuthenticationService) {
-                    // reset login status
-                    AuthenticationService.ClearCredentials();
+    var app = angular.module('ShipperApp');
 
-                    $scope.login = function () {
-                        $scope.dataLoading = true;
-                        AuthenticationService.Login($scope.username, $scope.password, function (response) {
-                            if (response.success) {
-                                AuthenticationService.SetCredentials($scope.username, $scope.password);
+    app.controller('LoginCtrl',
+        ['$scope', '$rootScope', '$location', 'AuthenticationService', 'ModalService',
+            function ($scope, $rootScope, $location, AuthenticationService, ModalService) {
+                // reset login status
+                AuthenticationService.ClearCredentials();
+
+                $scope.showLogin = function (){
+                    ModalService.showModal({
+                        templateUrl: "app/views/loginModal.html",
+                        controller: "LoginModalCtrl"
+                    }).then(function(modal) {
+
+                        modal.element.modal();
+                        modal.close.then(function(result) {
+                            if (result){
                                 $location.path('/orders');
-                                $scope.error = null;
-                                $scope.dataLoading = false;
-                            } else {
-                                $scope.error = response.message;
-                                $scope.dataLoading = false;
                             }
                         });
-                    };
 
-                    //TODO Implement logout
-                    $scope.logout = function () {
-                        AuthenticationService.ClearCredentials();
-                    };
+                    });
+                };
 
-                }]);
+                //TODO Implement logout (only show if logged in)
+                $scope.logout = function () {
+                    AuthenticationService.ClearCredentials();
+                };
+
+            }]);
+
+    app.controller('LoginModalCtrl',
+        ['$scope', '$element', 'AuthenticationService', 'close',
+            function($scope, $element, AuthenticationService, close) {
+
+                $scope.login = function () {
+                    $scope.dataLoading = true;
+                    AuthenticationService.Login($scope.username, $scope.password, function (response) {
+                        if (response.success) {
+                            AuthenticationService.SetCredentials($scope.username, $scope.password);
+                            $scope.error = null;
+                            $scope.dataLoading = false;
+
+                            var result = true; //for testing
+                            close(result, 500); // close modal, but give 500ms for bootstrap to animate
+                            $element.modal('hide'); // dirty fix for backdrop not hiding issue
+                        } else {
+                            $scope.error = response.message;
+                            $scope.dataLoading = false;
+                        }
+                    });
+                }
+
+            }]);
 })();

@@ -1,54 +1,57 @@
 (function () {
     'use strict';
 
-    angular.module('Authentication')
+    angular.module('Authentication', [])
         .factory('AuthenticationService',
             ['Base64', '$http', '$rootScope', '$timeout', //'$cookies', 
                 function (Base64, $http, $rootScope, $timeout) { //$cookies, 
-                    var service = {};
-
-                    service.Login = function (username, password, callback) {
-
-                        /* dummy auth */
-                        $timeout(function () {
-                            //var response = {success: username === 'test' && password === 'test'};
-                            var response = {success: true}; //for testing
-                            if (!response.success) {
-                                response.message = 'Username or password is incorrect.';
-                            }
-                            callback(response);
-                        }, 1000);
-
-
-                        /* TODO setup authentication check with ShipStationService/API */
-                        //$http.post('/api/authenticate', { username: username, password: password })
-                        //    .success(function (response) {
-                        //        callback(response);
-                        //    });
-
+                    return {
+                        
+                        Login: function (username, password, callback) {
+    
+                            /* dummy auth */
+                            $timeout(function () {
+                                //var response = {success: username === 'test' && password === 'test'};
+                                var response = {success: true}; //for testing
+                                if (!response.success) {
+                                    response.message = 'Username or password is incorrect.';
+                                }
+                                
+                                callback(response);
+                            }, 1000);
+    
+    
+                            /* TODO setup authentication check with ShipStationService/API */
+                            //$http.post('/api/authenticate', { username: username, password: password })
+                            //    .success(function (response) {
+                            //          this.LoggedIn = true;
+                            //          callback(response);
+                            //    });
+    
+                        },
+                        
+                        SetCredentials: function (username, password) {
+                            var authdata = Base64.encode(username + ':' + password);
+    
+                            $rootScope.globals = {
+                                currentUser: {
+                                    username: username,
+                                    authdata: authdata
+                                }
+                            };
+    
+                            $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata;
+                            //$cookies.put('globals', $rootScope.globals); //TODO implement cookies
+                        },
+                        
+                        ClearCredentials: function () {
+                            $rootScope.globals = {};
+                            //$cookies.remove('globals');
+                            $http.defaults.headers.common.Authorization = 'Basic ';
+                        }
+                        
                     };
-
-                    service.SetCredentials = function (username, password) {
-                        var authdata = Base64.encode(username + ':' + password);
-
-                        $rootScope.globals = {
-                            currentUser: {
-                                username: username,
-                                authdata: authdata
-                            }
-                        };
-
-                        $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata;
-                        //$cookies.put('globals', $rootScope.globals); //TODO implement cookies
-                    };
-
-                    service.ClearCredentials = function () {
-                        $rootScope.globals = {};
-                        //$cookies.remove('globals');
-                        $http.defaults.headers.common.Authorization = 'Basic ';
-                    };
-
-                    return service;
+                    
                 }])
 
         
