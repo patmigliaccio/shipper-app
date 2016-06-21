@@ -1,5 +1,6 @@
 angular.module('ShipperApp', ['Authentication', 'ngRoute', 'ngSanitize', 'angularModalService', 'ngCsv'])
     .config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
+        //TODO convert to stateprovider with ui-router
         $routeProvider
             .when('/', {
                 templateUrl: 'app/views/homeView.html',
