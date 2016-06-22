@@ -7,12 +7,12 @@
     </tr>
 
     <tr>
-        <th>Item SKU</th>
+        <th>Item</th>
         <th>Total Weight</th>
     </tr>
 
-    <tr ng-repeat="total in tc.totals | orderBy : 'item_sku'">
-        <td>{{ total.item_sku }}</td>
+    <tr ng-repeat="total in tc.totals | orderBy : 'item_name'">
+        <td>{{ total.item_name }}</td>
         <td>{{ total.total_weight }} {{total.item_weight_units}}</td>
     </tr>
 </table>

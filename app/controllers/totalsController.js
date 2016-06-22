@@ -6,6 +6,9 @@
     app.controller('TotalsCtrl', ['$scope', 'ShipStation', function ($scope, ShipStation) {
         var tc = this;
 
+        var specialCase = '{{ ItemName }}'; //adds items from nested options
+        var removeParent = true; //removes parent item from list if nested item found
+
         tc.Initialize = function () {
             var orders;
 
@@ -26,16 +29,16 @@
                 var itemLength = items.length;
 
                 for (var i = 0; i < itemLength; i++) {
-                    
+
                     //special case for products nested in options
+                    var skipItem = false;
                     for(var o in items[i].options){
                         var option = items[i].options[o];
 
-                        if (option.name.indexOf('Coffee') > -1){
+                        if (option.name.indexOf(specialCase) > -1){
 
                             items.push({
                                 name: option.value,
-                                sku: option.value,
                                 weight: {
                                     value: '12',
                                     units: 'ounces'
@@ -43,25 +46,29 @@
                                 options: []
                             });
 
-                            if (o < options.length) itemLength++;
+                            itemLength++;
+                            
+                            skipItem = removeParent && true;
                         }
                     }
 
-                    if (!v[items[i].sku]) {
-                        v[items[i].sku] = {
-                            item_name: items[i].name,
-                            item_sku: items[i].sku,
-                            total_weight: 0,
-                            item_weight_units: "lbs" //items[i].weight.units
-                        };
-                    }
+                    if (!skipItem && items[i].weight.value > 0){
+                        if (!v[items[i].name]) {
+                            v[items[i].name] = {
+                                item_name: items[i].name,
+                                total_weight: 0,
+                                item_weight_units: "lbs"
+                            };
+                        }
 
-                    //converts ounces to pounds
-                    if (items[i].weight.units == "ounces") {
-                        items[i].weight.value = Number(items[i].weight.value) / 16;
-                    }
+                        //converts ounces to pounds
+                        if (items[i].weight.units == "ounces") {
+                            items[i].weight.value = Number(items[i].weight.value) / 16;
+                        }
 
-                    v[items[i].sku].total_weight += Number(items[i].weight.value);
+                        v[items[i].name].total_weight += Number(items[i].weight.value);
+                    }
+                    
                 }
             }
 
