@@ -1,23 +1,24 @@
-angular.module('ShipperApp', ['Authentication', 'ngRoute', 'ngSanitize', 'angularModalService', 'ngCsv'])
-    .config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
-        //TODO convert to stateprovider with ui-router
-        $routeProvider
-            .when('/', {
-                templateUrl: 'app/views/homeView.html',
-                controller: 'HomeCtrl',
-                controllerAs: 'hc'
+angular.module('ShipperApp', ['Authentication', 'ui.router', 'ngSanitize', 'angularModalService', 'ngCsv'])
+    .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+
+        $stateProvider
+            .state('home', {
+                url: "",
+                templateUrl: "app/views/homeView.html",
+                controller: "HomeCtrl as hc"
             })
-            .when('/orders', {
-                templateUrl: 'app/views/ordersView.html',
-                controller: 'OrdersCtrl',
-                controllerAs: 'oc'
+            .state('orders', {
+                url: "/orders",
+                templateUrl: "app/views/ordersView.html",
+                controller: "OrdersCtrl as oc"
             })
-            .when('/totals', {
-                templateUrl: 'app/views/totalsView.html',
-                controller: 'TotalsCtrl',
-                controllerAs: 'tc'
-            })
-            .otherwise('/');
+            .state('totals', {
+                url: "/totals",
+                templateUrl: "app/views/totalsView.html",
+                controller: "TotalsCtrl as tc"
+            });
+
+        $urlRouterProvider.otherwise("/");
 
         //TODO get html5mode working
         $locationProvider.html5Mode(false).hashPrefix('!');
@@ -32,7 +33,7 @@ angular.module('ShipperApp', ['Authentication', 'ngRoute', 'ngSanitize', 'angula
 
                     return config || $q.when(config);
                 }
-
+                //TODO modify response to check for unauthorized request
             }
         });
 
