@@ -3,13 +3,13 @@
 
     var app = angular.module('ShipperApp');
 
-    app.controller('OrdersCtrl', ['$scope', 'ShipStation', function ($scope, ShipStation) {
+    app.controller('OrdersCtrl', ['$scope', 'OrderService', function ($scope, OrderService) {
         var oc = this;
 
         oc.getOrders = function(){
-            ShipStation.getOrders()
-                .then(function (data) {
-                    oc.orders = $.map(data, function (value) {
+            OrderService.get({ orderStatus: 'awaiting_shipment' },
+                function (response) {
+                    oc.orders = $.map(response.orders, function (value) {
                         return [value];
                     });
                 });
@@ -17,7 +17,7 @@
 
         var init = function(){
             oc.getOrders();
-        }
+        };
 
         init();
 

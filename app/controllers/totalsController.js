@@ -3,21 +3,19 @@
 
     var app = angular.module('ShipperApp');
 
-    app.controller('TotalsCtrl', ['$scope', 'ShipStation', function ($scope, ShipStation) {
+    app.controller('TotalsCtrl', ['$scope', 'OrderService', function ($scope, OrderService) {
         var tc = this;
 
         var specialCase = '{{ ItemName }}'; //adds items from nested options
         var removeParent = true; //removes parent item from list if nested item found
 
         tc.Initialize = function () {
-            var orders;
 
-            ShipStation.getOrders()
-                .then(function (data) {
-                    orders = data;
-
-                    tc.totals = tc.Process(orders);
+            OrderService.getAwaitingShipments().$promise
+                .then(function(response){
+                    tc.totals = tc.Process(response.orders);
                 });
+            
         };
 
         //totals item weight values that have the same sku
@@ -25,7 +23,12 @@
             var v = {};
 
             for (var x in orders) {
-                var items = orders[x].items;
+
+                var items = [];
+                if (orders.hasOwnProperty(x)) {
+                    items = orders[x].items;
+                }
+
                 var itemLength = items.length;
 
                 for (var i = 0; i < itemLength; i++) {
@@ -33,7 +36,11 @@
                     //special case for products nested in options
                     var skipItem = false;
                     for(var o in items[i].options){
-                        var option = items[i].options[o];
+                        var option = {};
+
+                        if (items[i].options.hasOwnProperty(o)) {
+                            option = items[i].options[o];
+                        }
 
                         if (option.name.indexOf(specialCase) > -1){
 
