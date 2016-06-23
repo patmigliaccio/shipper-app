@@ -4,8 +4,8 @@
     var app = angular.module('ShipperApp');
 
     app.controller('LoginCtrl',
-        ['$scope', '$rootScope', '$location', 'AuthenticationService', 'ModalService',
-            function ($scope, $rootScope, $location, AuthenticationService, ModalService) {
+        ['$scope', '$state', 'AuthenticationService', 'ModalService',
+            function ($scope, $state, AuthenticationService, ModalService) {
                 // reset login status
                 AuthenticationService.ClearCredentials();
 
@@ -17,8 +17,9 @@
 
                         modal.element.modal();
                         modal.close.then(function(result) {
+
                             if (result){
-                                $location.path('/orders');
+                                $state.go('orders')
                             }
                         });
 
