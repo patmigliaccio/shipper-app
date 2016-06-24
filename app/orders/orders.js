@@ -3,8 +3,8 @@ angular.module('orders', ['services.orders'])
     .controller('OrdersCtrl', ['$scope', 'orders', function ($scope, orders) {
         var oc = this;
 
-        oc.getOrders = function(){
-            orders.get({ orderStatus: 'awaiting_shipment' },
+        oc.getOrders = function(status){
+            orders.get({ orderStatus: status.value },
                 function (response) {
                     oc.orders = $.map(response.orders, function (value) {
                         return [value];
@@ -12,8 +12,19 @@ angular.module('orders', ['services.orders'])
                 });
         };
 
+        oc.statusChange = function(){
+            oc.getOrders(oc.status);
+        };
+        
         var init = function(){
-            oc.getOrders();
+            oc.statuses =[
+                {name: 'Awaiting Payment', value: 'awaiting_payment'},
+                {name: 'On Hold', value: 'on_hold'},
+                {name: 'Awaiting Shipment', value: 'awaiting_shipment'},
+                {name: 'Pending Fulfillment', value: 'pending_fulfillment'},
+                {name: 'Shipped', value:'shipped'}];
+            oc.status = oc.statuses[2];
+            oc.getOrders(oc.status);
         };
 
         init();

@@ -1,18 +1,18 @@
-<table class="col-lg-12 table table-striped totals-view">
-    <tr>
-        <th colspan="1"><h4>Weight Totals</h4></th>
-        <th colspan="1" class="text-right">
-            <button class="btn btn-info" type="button" ng-csv="tc.totals" filename="Totals_Report.csv">Export</button>
-        </th>
-    </tr>
+<div class="row">
+    <h3 class="col-lg-4">Awaiting Shipment Totals</h3>
+    <div class="col-lg-offset-6 col-lg-2 text-right">
+        <button class="col-lg-12 btn btn-info" type="button" ng-csv="tc.totals" filename="Totals_Report.csv">Export</button>
+    </div>
+</div>
 
-    <tr>
-        <th>Item</th>
-        <th>Total Weight</th>
-    </tr>
+<div class="col-lg-12 orders-list">
+    <div class="row header-row">
+        <div class="col-lg-6">Item</div>
+        <div class="col-lg-6">Total Weight</div>
+    </div>
 
-    <tr ng-repeat="total in tc.totals | orderBy : 'item_name'">
-        <td>{{ total.item_name }}</td>
-        <td>{{ total.total_weight }} {{total.item_weight_units}}</td>
-    </tr>
-</table>
+    <div class="row order-row" ng-repeat="total in tc.totals | orderBy : 'item_name'">
+        <div class="col-lg-6">{{ total.item_name }}</div>
+        <div class="col-lg-6">{{ total.total_weight }} {{total.item_weight_units}}</div>
+    </div>
+</div>

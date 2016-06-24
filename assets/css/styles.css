@@ -1,3 +1,9 @@
+.h1, .h2, .h3, h1, h2, h3 {
+  margin-top: 0; }
+
+.h1, .h2, .h3, h1, h2, h3 {
+  margin-top: 0; }
+
 ul.nav {
   margin-bottom: 3.236em;
   border-bottom: 0; }
@@ -27,21 +33,19 @@ ul.nav > li {
   ul.nav > li.active a {
     color: #232323; }
 
-.orders-view {
-  /*  > div{
-      padding-top: 10px;
-      padding-bottom: 10px;
-    }
+.orders-list > div:nth-of-type(2n + 1) {
+  background-color: #e7e7e7; }
 
-    > div:nth-of-type(2n+1) {
-      background-color: #e7e7e7;
-    }*/ }
-
-.order-header {
+.header-row {
   font-weight: 600; }
 
-.order-item {
-  border-bottom: 1px solid #444; }
+.order-row, .header-row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-top: 1px solid #ddd; }
+
+html, body {
+  height: 100%; }
 
 body {
   background: url("../images/sleeve.png") repeat-x center center fixed #fcfbfa; }
@@ -50,7 +54,7 @@ input[type=text], input[type=password] {
   width: 100%; }
 
 .main-container {
-  height: 100vh;
+  min-height: 100%;
   padding-right: 67.5px;
   padding-left: 67.5px;
   max-width: 1095px;

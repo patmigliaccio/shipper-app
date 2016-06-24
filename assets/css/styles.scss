@@ -2,6 +2,10 @@
 @import "vendors/all";
 @import "partials/all";
 
+html, body{
+  height: 100%;
+}
+
 body{
   background: url('../images/sleeve.png') repeat-x center center fixed #fcfbfa;
 }
@@ -11,7 +15,7 @@ input[type=text], input[type=password]{
 }
 
 .main-container {
-  height: 100vh;
+  min-height: 100%;
   padding-right: ($main-width - $inner-width)/2;
   padding-left: ($main-width - $inner-width)/2;
   max-width: $main-width;
