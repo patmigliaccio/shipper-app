@@ -1,17 +1,14 @@
-(function () {
-    'use strict';
+angular.module('login', ['services.authentication', 'angularModalService'])
 
-    var app = angular.module('ShipperApp');
-
-    app.controller('LoginCtrl',
-        ['$scope', '$state', 'AuthenticationService', 'ModalService',
-            function ($scope, $state, AuthenticationService, ModalService) {
+    .controller('LoginCtrl',
+        ['$scope', '$state', 'authentication', 'ModalService',
+            function ($scope, $state, authentication, ModalService) {
                 // reset login status
-                AuthenticationService.ClearCredentials();
+                authentication.ClearCredentials();
 
                 $scope.showLogin = function (){
                     ModalService.showModal({
-                        templateUrl: "app/views/loginModal.html",
+                        templateUrl: "app/login/login-modal.tpl.html",
                         controller: "LoginModalCtrl"
                     }).then(function(modal) {
 
@@ -28,20 +25,20 @@
 
                 //TODO Implement logout (only show if logged in)
                 $scope.logout = function () {
-                    AuthenticationService.ClearCredentials();
+                    authentication.ClearCredentials();
                 };
 
-            }]);
+            }])
 
-    app.controller('LoginModalCtrl',
-        ['$scope', '$element', 'AuthenticationService', 'close',
-            function($scope, $element, AuthenticationService, close) {
+    .controller('LoginModalCtrl',
+        ['$scope', '$element', 'authentication', 'close',
+            function($scope, $element, authentication, close) {
 
                 $scope.login = function () {
                     $scope.dataLoading = true;
-                    AuthenticationService.Login($scope.username, $scope.password, function (response) {
+                    authentication.Login($scope.username, $scope.password, function (response) {
                         if (response.success) {
-                            AuthenticationService.SetCredentials($scope.username, $scope.password);
+                            authentication.SetCredentials($scope.username, $scope.password);
                             $scope.error = null;
                             $scope.dataLoading = false;
 
@@ -56,4 +53,3 @@
                 }
 
             }]);
-})();

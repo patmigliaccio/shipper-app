@@ -21,12 +21,12 @@
     <title>ShipStation Order Manager</title>
 </head>
 <body>
-    <div class="row main-container" ng-controller="MainCtrl as mc">
+    <div class="row main-container" ng-controller="AppCtrl as ac">
         <div class="row header">
             <div class="col-lg-6">
                 <h2>ShipStation Order Manager</h2>
             </div>
-            <div class="col-lg-6" ng-include=" 'app/views/loginView.html' "></div>
+            <div class="col-lg-6" ng-include=" 'app/login/login.tpl.html' "></div>
         </div>
 
         <ul class="nav nav-tabs">
@@ -43,13 +43,11 @@
 
     <!-- AngularJS --> <!-- TODO bundle scripts -->
     <script type="text/javascript" src="app/app.js"></script>
-    <script type="text/javascript" src="app/services/AuthenticationService.js"></script>
-    <script type="text/javascript" src="app/services/InterceptorService.js"></script>
-    <script type="text/javascript" src="app/services/OrderService.js"></script>
-    <script type="text/javascript" src="app/controllers/mainController.js"></script>
-    <script type="text/javascript" src="app/controllers/homeController.js"></script>
-    <script type="text/javascript" src="app/controllers/loginController.js"></script>
-    <script type="text/javascript" src="app/controllers/ordersController.js"></script>
-    <script type="text/javascript" src="app/controllers/totalsController.js"></script>
+    <script type="text/javascript" src="app/services/authentication.js"></script>
+    <script type="text/javascript" src="app/services/interceptor.js"></script>
+    <script type="text/javascript" src="app/services/orders.js"></script>
+    <script type="text/javascript" src="app/home/home.js"></script>
+    <script type="text/javascript" src="app/login/login.js"></script>
+    <script type="text/javascript" src="app/orders/orders.js"></script>
 </body>
 </html>

@@ -1,9 +1,27 @@
-(function () {
-    'use strict';
+angular.module('orders', ['services.orders'])
 
-    var app = angular.module('ShipperApp');
+    .controller('OrdersCtrl', ['$scope', 'orders', function ($scope, orders) {
+        var oc = this;
 
-    app.controller('TotalsCtrl', ['$scope', 'OrderService', function ($scope, OrderService) {
+        oc.getOrders = function(){
+            orders.get({ orderStatus: 'awaiting_shipment' },
+                function (response) {
+                    oc.orders = $.map(response.orders, function (value) {
+                        return [value];
+                    });
+                });
+        };
+
+        var init = function(){
+            oc.getOrders();
+        };
+
+        init();
+
+        //TODO add export function that simplifies oc.orders array
+    }])
+
+    .controller('TotalsCtrl', ['$scope', 'orders', function ($scope, orders) {
         var tc = this;
 
         var specialCase = '{{ ItemName }}'; //adds items from nested options
@@ -11,11 +29,11 @@
 
         tc.Initialize = function () {
 
-            OrderService.getAwaitingShipments().$promise
+            orders.getAwaitingShipments().$promise
                 .then(function(response){
                     tc.totals = tc.Process(response.orders);
                 });
-            
+
         };
 
         //totals item weight values that have the same sku
@@ -54,7 +72,7 @@
                             });
 
                             itemLength++;
-                            
+
                             skipItem = removeParent && true;
                         }
                     }
@@ -75,7 +93,7 @@
 
                         v[items[i].name].total_weight += Number(items[i].weight.value);
                     }
-                    
+
                 }
             }
 
@@ -85,8 +103,6 @@
         };
 
         tc.Initialize();
-        
+
         //TODO add export function that simplifies and sorts the tc.totals array
     }]);
-
-})();
