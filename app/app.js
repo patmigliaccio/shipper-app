@@ -3,13 +3,16 @@ angular.module('ShipperApp', [
     'ngSanitize',
     'ngResource',
     'ngCsv',
+    'ngCookies',
+    'angular-storage',
     'services.interceptor',
+    'services.authentication',
     'home',
     'login',
     'orders'])
     
-    .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider',
-        function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'storeProvider', '$httpProvider',
+        function ($stateProvider, $urlRouterProvider, $locationProvider, storeProvider, $httpProvider) {
 
         $stateProvider
             .state('home', {
@@ -30,8 +33,10 @@ angular.module('ShipperApp', [
 
         $urlRouterProvider.otherwise("/");
 
-        //TODO get html5mode working
+        //TODO setup html5mode
         $locationProvider.html5Mode(false).hashPrefix('!');
+
+        storeProvider.setStore('cookieStorage');
 
         $httpProvider.interceptors.push('interceptor');
 
@@ -39,12 +44,24 @@ angular.module('ShipperApp', [
         $httpProvider.defaults.headers.common['Content-Type'] = 'application/json';
 
     }])
-    
-    .controller('AppCtrl', ['$scope', '$state', '$rootScope', function ($scope, $state, $rootScope) {
-        $rootScope.$on('unauthorized', function() {
-            $state.go('home'); //TODO prompt user for login if unauthorized
-        });
-    }]);
+
+    .run(['$rootScope', 'store', 'authentication',
+        function ($rootScope, store, authentication) {
+            //authenticate user if credentials stored
+            $rootScope.globals = store.get('globals') || {};
+
+            if ($rootScope.globals.authData) {
+                authentication.SetAuthorization($rootScope.globals.authData);
+            }
+        }])
+
+    .controller('AppCtrl', ['$scope', '$rootScope', '$state', 'authentication',
+        function ($scope, $rootScope, $state, authentication) {
+            $rootScope.$on('unauthorized', function() {
+                authentication.ClearCredentials();
+                $state.go('home'); //TODO prompt user for login if unauthorized
+            });
+        }]);
 
 
 

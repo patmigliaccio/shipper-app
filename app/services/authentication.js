@@ -1,8 +1,8 @@
-angular.module('services.authentication', [])
+angular.module('services.authentication', ['angular-storage'])
     
     .factory('authentication',
-        ['Base64', '$http', '$rootScope',
-            function (Base64, $http, $rootScope) { 
+        ['Base64', '$http', '$rootScope', 'store',
+            function (Base64, $http, $rootScope, store) {
                 return {
                     
                     Login: function (username, password, callback) {
@@ -13,10 +13,9 @@ angular.module('services.authentication', [])
                             params: {username: username, password: password}
                         })
                         .then(function(response){
-                                this.LoggedIn = true;
                                 callback(response.data);
                             }, function(error){ //TODO fix auth.php to return error
-                                response.message = 'Username or password is incorrect.';
+                                error.message = 'Username or password is incorrect.';
                             });
                         
                     },
@@ -25,24 +24,24 @@ angular.module('services.authentication', [])
                         var authData = Base64.encode(apiKey + ':' + apiSecret);
 
                         $rootScope.globals = {
-                            currentUser: {
-                                username: username,
-                                authData: authData
-                            }
+                            authData: authData
                         };
 
-                        //$cookies.put('globals', $rootScope.globals); //TODO implement cookies
+                        store.set('globals', $rootScope.globals);
                         
-                        $http.defaults.headers.common['Authorization'] = 'Basic ' + authData;
+                        this.SetAuthorization($rootScope.globals.authData);
                     },
                     
                     ClearCredentials: function () {
                         $rootScope.globals = {};
-                        //$cookies.remove('globals');
+                        store.remove('globals');
                         
                         $http.defaults.headers.common.Authorization = 'Basic ';
-                    }
+                    },
                     
+                    SetAuthorization: function (authData) {
+                        $http.defaults.headers.common['Authorization'] = 'Basic ' + authData;
+                    }                
                 };
                 
             }])

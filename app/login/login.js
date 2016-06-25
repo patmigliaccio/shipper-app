@@ -1,11 +1,12 @@
 angular.module('login', ['services.authentication', 'angularModalService'])
 
     .controller('LoginCtrl',
-        ['$scope', '$state', 'authentication', 'ModalService',
-            function ($scope, $state, authentication, ModalService) {
-                // reset login status
-                authentication.ClearCredentials();
-
+        ['$scope', '$rootScope', '$state', 'authentication', 'ModalService',
+            function ($scope, $rootScope, $state, authentication, ModalService) {
+                if($rootScope.globals.authData){
+                    $scope.loggedIn = true;
+                }
+                
                 $scope.showLogin = function (){
                     ModalService.showModal({
                         templateUrl: "app/login/login-modal.tpl.html",
@@ -16,16 +17,18 @@ angular.module('login', ['services.authentication', 'angularModalService'])
                         modal.close.then(function(result) {
 
                             if (result){
-                                $state.go('orders')
+                                $scope.loggedIn = true;
+                                $state.go('orders');
                             }
                         });
 
                     });
                 };
-
-                //TODO Implement logout (only show if logged in)
+                
                 $scope.logout = function () {
+                    $scope.loggedIn = false;
                     authentication.ClearCredentials();
+                    $state.go('home');
                 };
 
             }])
@@ -38,16 +41,16 @@ angular.module('login', ['services.authentication', 'angularModalService'])
                     $scope.dataLoading = true;
                     
                     authentication.Login($scope.username, $scope.password, function (response) {
+                        $scope.dataLoading = false;
+                        
                         if (response.success) {
                             authentication.SetCredentials($scope.username, response.apiKey, response.apiSecret);
                             $scope.error = null;
-                            $scope.dataLoading = false;
                             
                             close(true, 500); // close modal, but give 500ms for bootstrap to animate
                             $element.modal('hide'); // dirty fix for backdrop not hiding issue
                         } else {
                             $scope.error = response.message;
-                            $scope.dataLoading = false;
                         }
                     });
                 }
