@@ -1,7 +1,7 @@
 @import "../modules/all";
 
 ul.nav {
-  margin-bottom: $spacer * 2;
+  margin-bottom: $spacer;
   border-bottom: 0;
 }
 
@@ -12,7 +12,7 @@ ul.nav > li {
     font-weight: 200;
     text-transform: uppercase;
     color: #2f2f31;
-    background: #fff;
+    background: #fff !important;
     font-size: 110%;
     letter-spacing: 0.1em;
     padding: 3px 17px 3px 17px;
@@ -25,12 +25,12 @@ ul.nav > li {
 
   &:hover a, &.active a{
     border: 1px solid #AAAEB4 !important;
-    color: #82858a;
+    color: #82858a !important;
     font-weight: 200;
-    background-color: #fff;
+    background-color: #fff !important;
   }
 
   &.active a{
-    color: #232323;
+    color: #232323 !important;
   }
 }

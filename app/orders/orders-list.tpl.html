@@ -4,7 +4,7 @@
         <select class="form-control" ng-options="status.name for status in oc.statuses" ng-change="oc.statusChange()" ng-model="oc.status"></select>
     </div>
     <div class="col-lg-offset-2 col-lg-2 text-right">
-        <button class="col-lg-12 btn btn-info" type="button" ng-csv="oc.orders" filename="Orders_Report.csv">Export</button>
+        <button class="col-xs-12 btn btn-info" type="button" ng-csv="oc.orders" filename="Orders_Report.csv">Export</button>
     </div>
 </div>
 

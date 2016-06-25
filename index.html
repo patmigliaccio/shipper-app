@@ -26,20 +26,26 @@
 <body>
     <div class="row main-container" ng-controller="AppCtrl as ac">
         <div class="row header">
-            <div class="col-lg-6">
-                <h2>ShipStation Order Manager</h2>
+            <!--<h2 class="col-lg-12">ShipStation Order Manager</h2>-->
+            <div class="col-lg-12">
+                <img src="assets/images/logo.png" />
             </div>
-            <div class="col-lg-6" ng-include=" 'app/login/login.tpl.html' "></div>
         </div>
 
-        <ul class="nav nav-tabs">
-            <li role="presentation" ui-sref-active="active"><a ui-sref="orders">Orders</a></li>
-            <li role="presentation" ui-sref-active="active"><a ui-sref="totals">Totals</a></li>
-        </ul>
+        <div class="row">
+            <div class="col-lg-8">
+                <ul class="col-xs-12 nav nav-pills">
+                    <li role="presentation" ui-sref-active="active"><a ui-sref="orders">Orders</a></li>
+                    <li role="presentation" ui-sref-active="active"><a ui-sref="totals">Totals</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-offset-2 col-lg-2" ng-include=" 'app/login/login.tpl.html' "></div>
+        </div>
 
         <div ui-view></div>
 
-        <div class="col-lg-12 footer">
+        <div class="row footer">
             <p>GitHub <a href="https://github.com/pmigliaccio" target="_blank">@pmigliaccio</a></p>
         </div>
     </div>
