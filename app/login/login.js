@@ -36,14 +36,14 @@ angular.module('login', ['services.authentication', 'angularModalService'])
 
                 $scope.login = function () {
                     $scope.dataLoading = true;
+                    
                     authentication.Login($scope.username, $scope.password, function (response) {
                         if (response.success) {
-                            authentication.SetCredentials($scope.username, $scope.password);
+                            authentication.SetCredentials($scope.username, response.apiKey, response.apiSecret);
                             $scope.error = null;
                             $scope.dataLoading = false;
-
-                            var result = true; //for testing
-                            close(result, 500); // close modal, but give 500ms for bootstrap to animate
+                            
+                            close(true, 500); // close modal, but give 500ms for bootstrap to animate
                             $element.modal('hide'); // dirty fix for backdrop not hiding issue
                         } else {
                             $scope.error = response.message;

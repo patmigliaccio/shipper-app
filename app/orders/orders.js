@@ -1,4 +1,4 @@
-angular.module('orders', ['services.orders'])
+angular.module('orders', ['resources.orders'])
 
     .controller('OrdersCtrl', ['$scope', 'orders', function ($scope, orders) {
         var oc = this;

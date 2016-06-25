@@ -1,8 +1,8 @@
-angular.module('services.orders', [])
+angular.module('resources.orders', [])
 
     .factory('orders',
         ['$resource', function($resource) {
-            var root = 'https://ssapi.shipstation.com/orders';
+            var root = 'orders';
 
             return $resource(root, {},
                 {

@@ -1,50 +1,45 @@
 angular.module('services.authentication', [])
     
     .factory('authentication',
-        ['Base64', '$http', '$rootScope', '$timeout', //'$cookies', 
-            function (Base64, $http, $rootScope, $timeout) { //$cookies, 
+        ['Base64', '$http', '$rootScope',
+            function (Base64, $http, $rootScope) { 
                 return {
                     
                     Login: function (username, password, callback) {
-
-                        /* dummy auth */
-                        $timeout(function () {
-                            //var response = {success: username === 'test' && password === 'test'};
-                            var response = {success: true}; //for testing
-                            if (!response.success) {
+                        
+                        $http({
+                            url: 'auth.php',
+                            method: "GET",
+                            params: {username: username, password: password}
+                        })
+                        .then(function(response){
+                                this.LoggedIn = true;
+                                callback(response.data);
+                            }, function(error){ //TODO fix auth.php to return error
                                 response.message = 'Username or password is incorrect.';
-                            }
-                            
-                            callback(response);
-                        }, 1000);
-
-
-                        /* TODO setup authentication check with ShipStationService/API */
-                        //$http.post('/api/authenticate', { username: username, password: password })
-                        //    .success(function (response) {
-                        //          this.LoggedIn = true;
-                        //          callback(response);
-                        //    });
-
+                            });
+                        
                     },
                     
-                    SetCredentials: function (username, password) {
-                        var authdata = Base64.encode(username + ':' + password);
+                    SetCredentials: function (username, apiKey, apiSecret) {
+                        var authData = Base64.encode(apiKey + ':' + apiSecret);
 
                         $rootScope.globals = {
                             currentUser: {
                                 username: username,
-                                authdata: authdata
+                                authData: authData
                             }
                         };
 
-                        $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata;
                         //$cookies.put('globals', $rootScope.globals); //TODO implement cookies
+                        
+                        $http.defaults.headers.common['Authorization'] = 'Basic ' + authData;
                     },
                     
                     ClearCredentials: function () {
                         $rootScope.globals = {};
                         //$cookies.remove('globals');
+                        
                         $http.defaults.headers.common.Authorization = 'Basic ';
                     }
                     
