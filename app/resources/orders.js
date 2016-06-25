@@ -13,12 +13,10 @@ angular.module('resources.orders', [])
                             id: '@id'
                         }
                     },
-                    getAwaitingShipments: {
-                        url: root,
-                        method:'GET',
-                        params: {
-                            orderStatus: 'awaiting_shipment'
-                        }
+                    getStatuses: {
+                        url: 'app/resources/order-statuses.json',
+                        method: 'GET',
+                        isArray: true
                     }
                 });
 

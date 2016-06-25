@@ -1,0 +1,7 @@
+[
+  {"name" : "Awaiting Payment", "value": "awaiting_payment"},
+  {"name": "On Hold", "value": "on_hold"},
+  {"name": "Awaiting Shipment", "value": "awaiting_shipment"},
+  {"name": "Pending Fulfillment", "value": "pending_fulfillment"},
+  {"name": "Shipped", "value":"shipped"}
+]

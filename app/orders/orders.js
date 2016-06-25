@@ -1,7 +1,20 @@
 angular.module('orders', ['resources.orders'])
+    .constant('totalsConfig', {
+            specialCase: "{{ ItemName }}", //adds items from nested options
+            removeParent: true //removes parent item from list if nested item found
+        })
 
     .controller('OrdersCtrl', ['$scope', 'orders', function ($scope, orders) {
         var oc = this;
+        
+        var init = function(){
+            orders.getStatuses().$promise
+                .then(function(response){
+                    oc.statuses = response;
+                    oc.status = oc.statuses[2]; //default status: Awaiting Shipment
+                    oc.getOrders(oc.status);
+                });
+        };
 
         oc.getOrders = function(status){
             orders.get({ orderStatus: status.value },
@@ -15,33 +28,22 @@ angular.module('orders', ['resources.orders'])
         oc.statusChange = function(){
             oc.getOrders(oc.status);
         };
-        
-        var init = function(){
-            oc.statuses =[
-                {name: 'Awaiting Payment', value: 'awaiting_payment'},
-                {name: 'On Hold', value: 'on_hold'},
-                {name: 'Awaiting Shipment', value: 'awaiting_shipment'},
-                {name: 'Pending Fulfillment', value: 'pending_fulfillment'},
-                {name: 'Shipped', value:'shipped'}];
-            oc.status = oc.statuses[2];
-            oc.getOrders(oc.status);
-        };
 
         init();
 
         //TODO add export function that simplifies oc.orders array
     }])
 
-    .controller('TotalsCtrl', ['$scope', 'orders', function ($scope, orders) {
+    .controller('TotalsCtrl', ['$scope', 'orders', 'totalsConfig', function ($scope, orders, totalsConfig) {
         var tc = this;
 
-        var specialCase = '{{ ItemName }}'; //adds items from nested options
-        var removeParent = true; //removes parent item from list if nested item found
+        var specialCase = totalsConfig.specialCase; //adds items from nested options
+        var removeParent = totalsConfig.removeParent; //removes parent item from list if nested item found
 
-        tc.Initialize = function () {
+        var init = function () {
 
-            orders.getAwaitingShipments().$promise
-                .then(function(response){
+            orders.get({ orderStatus: 'awaiting_shipment' },
+                function(response){
                     tc.totals = tc.Process(response.orders);
                 });
 
@@ -71,7 +73,7 @@ angular.module('orders', ['resources.orders'])
                             option = items[i].options[o];
                         }
 
-                        if (option.name.indexOf(specialCase) > -1){
+                        if (option.name.toLowerCase().indexOf(specialCase.toLowerCase()) > -1){ //case insensitive
 
                             items.push({
                                 name: option.value,
@@ -113,7 +115,7 @@ angular.module('orders', ['resources.orders'])
             });
         };
 
-        tc.Initialize();
+        init();
 
         //TODO add export function that simplifies and sorts the tc.totals array
     }]);

@@ -14,7 +14,7 @@ angular.module('services.interceptor', [])
         return {
             //uses proxy for http requests
             request: function (config) {
-                if (!~config.url.indexOf('.html') && !~config.url.indexOf('.php')){  //ignores certain requests
+                if (!config.url.match(/(.html|.php|.json)/)){  //ignores certain requests
 
                     //serializes parameters for proxy
                     var queryString = '';

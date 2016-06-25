@@ -9,7 +9,7 @@ angular.module('resources.accounts', [])
                     getTags: {
                         url: root + '/listtags',
                         method: 'GET',
-                        array: true
+                        isArray: true
                     }
                 });
 
