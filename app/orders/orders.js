@@ -1,7 +1,10 @@
 angular.module('orders', ['resources.orders'])
     .constant('totalsConfig', {
-            specialCase: "{{ ItemName }}", //adds items from nested options
-            removeParent: true //removes parent item from list if nested item found
+            specialCase: "coffee", //adds items from nested options
+            removeParent: true, //removes parent item from list if nested item found
+            defaultProductWeight: "12", //sets a default weight for new nested products added
+            defaultProductUnits: "ounces",//sets a default unit value for new nested products added
+            displayWeightAs: "lbs" //converts totals to this unit of measurement
         })
 
     .controller('OrdersCtrl', ['$scope', 'orders', function ($scope, orders) {
@@ -37,9 +40,6 @@ angular.module('orders', ['resources.orders'])
     .controller('TotalsCtrl', ['$scope', 'orders', 'totalsConfig', function ($scope, orders, totalsConfig) {
         var tc = this;
 
-        var specialCase = totalsConfig.specialCase; //adds items from nested options
-        var removeParent = totalsConfig.removeParent; //removes parent item from list if nested item found
-
         var init = function () {
 
             orders.get({ orderStatus: 'awaiting_shipment' },
@@ -52,6 +52,12 @@ angular.module('orders', ['resources.orders'])
         //totals item weight values that have the same sku
         tc.Process = function (orders) {
             var v = {};
+
+            var specialCase = totalsConfig.specialCase; //adds items from nested options
+            var removeParent = totalsConfig.removeParent; //removes parent item from list if nested item found
+            var productWeight = totalsConfig.defaultProductWeight; //sets a default weight for new nested products added
+            var productUnits = totalsConfig.defaultProductUnits; //sets a default unit value for new nested products added
+            var weightFilter = totalsConfig.displayWeightAs; //converts totals to this unit of measurement
 
             for (var x in orders) {
 
@@ -73,13 +79,14 @@ angular.module('orders', ['resources.orders'])
                             option = items[i].options[o];
                         }
 
-                        if (option.name.toLowerCase().indexOf(specialCase.toLowerCase()) > -1){ //case insensitive
+                        var regex = new RegExp( specialCase, 'gi' ); //case insensitive
+                        if (option.name.match(regex)){
 
                             items.push({
                                 name: option.value,
                                 weight: {
-                                    value: '12',
-                                    units: 'ounces'
+                                    value: productWeight,
+                                    units: productUnits
                                 },
                                 options: []
                             });
@@ -95,12 +102,12 @@ angular.module('orders', ['resources.orders'])
                             v[items[i].name] = {
                                 item_name: items[i].name,
                                 total_weight: 0,
-                                item_weight_units: "lbs"
+                                item_weight_units: weightFilter
                             };
                         }
 
                         //converts ounces to pounds
-                        if (items[i].weight.units == "ounces") {
+                        if (items[i].weight.units == "ounces" && weightFilter == "lbs") {
                             items[i].weight.value = Number(items[i].weight.value) / 16;
                         }
 
