@@ -4,6 +4,7 @@ angular.module('ShipperApp', [
     'ngResource',
     'ngCsv',
     'ngCookies',
+    'angularSpinner',
     'angular-storage',
     'services.interceptor',
     'services.authentication',
@@ -55,11 +56,12 @@ angular.module('ShipperApp', [
             }
         }])
 
-    .controller('AppCtrl', ['$scope', '$rootScope', '$state', 'authentication',
-        function ($scope, $rootScope, $state, authentication) {
+    .controller('AppCtrl', ['$scope', '$rootScope', '$state', 'authentication', 'usSpinnerService',
+        function ($scope, $rootScope, $state, authentication, usSpinnerService) {
             $rootScope.$on('unauthorized', function() {
                 authentication.ClearCredentials();
-                $state.go('home'); //TODO prompt user for login if unauthorized
+                $state.go('home'); //TODO prompt user with login modal if unauthorized
+                usSpinnerService.stop('spinner');
             });
         }]);
 

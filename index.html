@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/styles.css" />
 
-    <!-- JS -->
+    <!-- JS --> <!-- TODO bundle scripts -->
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -17,6 +17,8 @@
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-cookies.js"></script>
     <script type="text/javascript" src="assets/libs/angular-storage.min.js"></script>
     <script type="text/javascript" src="assets/libs/angular-modal-service.min.js"></script>
+    <script type="text/javascript" src="assets/libs/spin.min.js"></script>
+    <script type="text/javascript" src="assets/libs/angular-spinner.min.js"></script>
     <script type="text/javascript" src="assets/libs/ng-csv.min.js"></script>
 
     <base href="/" />
@@ -42,10 +44,14 @@
             <div class="col-lg-offset-2 col-lg-2" ng-include=" 'app/login/login.tpl.html' "></div>
         </div>
 
-        <div ui-view></div>
+        <div class="content">
+            <div ui-view></div>
+        </div>
+
+        <span class="col-lg-12 loader" us-spinner spinner-key="spinner"></span>
 
         <div class="row footer">
-            <p>GitHub <a href="https://github.com/pmigliaccio" target="_blank">@pmigliaccio</a></p>
+            <p class="col-lg-12">GitHub <a href="https://github.com/pmigliaccio" target="_blank">@pmigliaccio</a></p>
         </div>
     </div>
 

@@ -2,6 +2,8 @@
 @import "vendors/all";
 @import "partials/all";
 
+$footer-height: 60px;
+
 html, body{
   height: 100%;
 }
@@ -10,11 +12,16 @@ body{
   background: url('../images/sleeve.png') repeat-x center center fixed #fcfbfa;
 }
 
+h3{
+  margin-top: 10px;
+}
+
 input[type=text], input[type=password]{
   width: 100%;
 }
 
 .main-container {
+  position: relative;
   min-height: 100%;
   padding-right: ($main-width - $inner-width)/2;
   padding-left: ($main-width - $inner-width)/2;
@@ -29,6 +36,15 @@ input[type=text], input[type=password]{
   margin-bottom: $spacer;
 }
 
+.content{
+  margin-bottom: $footer-height;
+}
+
 .footer {
-  margin: 25px 0 5px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: $footer-height;
+  margin-top: -$footer-height;
+  padding-top: $footer-height;
 }
