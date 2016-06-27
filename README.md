@@ -13,3 +13,4 @@ Built with AngularJS.
 * Angular Modal Service / [@dwmkerr](https://github.com/dwmkerr/angular-modal-service)
 * AngularUI Router / [@angular-ui](https://github.com/angular-ui/ui-router)
 * angular-storage / [@auth0](https://github.com/auth0/angular-storage)
+* angular-spinner / [@urish](https://github.com/urish/angular-spinner)
