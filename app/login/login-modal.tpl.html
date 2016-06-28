@@ -7,12 +7,12 @@
             <div class="modal-body">
                 <div ng-show="error" class="alert alert-danger">{{error}}</div>
                 <form class="row">
-                    <div class="col-lg-6">
+                    <div class="col-sm-6">
                         <p>Username:</p>
                         <input type="text" class="form-control" name="username" id="username" placeholder="Username" ng-model="username" required />
                         <span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username is required</span>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-sm-6">
                         <p>Password:</p>
                         <input type="password" class="form-control" name="password" placeholder="Password" ng-model="password" required />
                         <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span>

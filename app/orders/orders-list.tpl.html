@@ -11,25 +11,25 @@
 <div class="col-lg-12 orders-list" ng-show="oc.orders.length">
 
     <div class="row header-row">
-        <div class="col-lg-1">#</div>
-        <div class="col-lg-3">Shipping To</div>
-        <div class="col-lg-8">
+        <div class="col-sm-3 col-lg-1">#</div>
+        <div class="col-sm-3 col-lg-3">Shipping To</div>
+        <div class="col-sm-6 col-lg-8">
             <div class="row">
-                <div class="col-lg-5">SKU</div>
-                <div class="col-lg-5">Item</div>
-                <div class="col-lg-2">Weight</div>
+                <div class="col-sm-6 col-lg-5">SKU</div>
+                <div class="col-sm-6 col-lg-5">Item</div>
+                <div class="col-sm-12 col-lg-2">Weight</div>
             </div>
         </div>
     </div>
 
     <div class="row order-row" ng-repeat="order in oc.orders">
-        <div class="col-lg-1">{{ order.orderNumber }}</div>
-        <div class="col-lg-3 text-capitalize">{{ order.shipTo.name }}</div>
-        <div class="col-lg-8">
+        <div class="col-sm-3 col-lg-1">{{ order.orderNumber }}</div>
+        <div class="col-sm-3 col-lg-3 text-capitalize">{{ order.shipTo.name }}</div>
+        <div class="col-sm-6 col-lg-8">
             <div class="row" ng-repeat="item in order.items">
-                <div class="col-lg-5">{{item.sku}}</div>
-                <div class="col-lg-5">{{item.name}}</div>
-                <div class="col-lg-2">{{item.weight.value}} {{item.weight.units}}</div>
+                <div class="col-sm-6 col-lg-5">{{item.sku}}</div>
+                <div class="col-sm-6 col-lg-5">{{item.name}}</div>
+                <div class="col-sm-12 col-lg-2">{{item.weight.value}} {{item.weight.units}}</div>
             </div>
         </div>
     </div>
