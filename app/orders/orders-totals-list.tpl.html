@@ -1,7 +1,11 @@
 <div class="row">
     <h3 class="col-lg-4">Awaiting Shipment Totals</h3>
     <div class="col-lg-offset-6 col-lg-2 text-right">
-        <button class="col-xs-12 btn btn-info" type="button" ng-csv="tc.totals" filename="Totals_Report.csv">Export</button>
+        <button class="col-xs-12 btn btn-info"
+                type="button"
+                ng-csv="tc.totals"
+                csv-header="['Product', '12oz', '5lb', '12oz Subscription', '5lb Subscription', 'Weight', 'Units']"
+                filename="Totals_Report.csv">Export</button>
     </div>
 </div>
 
