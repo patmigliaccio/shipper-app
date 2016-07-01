@@ -44,7 +44,7 @@ angular.module('login', ['services.authentication', 'angularModalService'])
                         $scope.dataLoading = false;
                         
                         if (response.success) {
-                            authentication.SetCredentials($scope.username, response.apiKey, response.apiSecret);
+                            authentication.SetCredentials($scope.username, response.data.apiKey, response.data.apiSecret);
                             $scope.error = null;
                             
                             close(true, 500); // close modal, but give 500ms for bootstrap to animate

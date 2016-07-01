@@ -1,21 +1,27 @@
 angular.module('services.authentication', ['angular-storage'])
     
     .factory('authentication',
-        ['Base64', '$http', '$rootScope', 'store',
-            function (Base64, $http, $rootScope, store) {
+        ['Base64', '$http', '$log', '$rootScope', 'store',
+            function (Base64, $http, $log, $rootScope, store) {
                 return {
                     
                     Login: function (username, password, callback) {
-                        
+                        var auth = 'Basic ' + Base64.encode(username + ':' + password);
+
                         $http({
-                            url: 'auth.php',
+                            url: 'safe/SSApiKeys.json',
                             method: "GET",
-                            params: {username: username, password: password}
+                            headers: {
+                                'Authorization': auth
+                            }
                         })
                         .then(function(response){
-                                callback(response.data);
-                            }, function(error){ //TODO fix auth.php to return error
+                                response.success = true;
+                                callback(response);
+                            }, function(error){
                                 error.message = 'Username or password is incorrect.';
+                                $log.error(error);
+                                callback(error);
                             });
                         
                     },
@@ -29,7 +35,7 @@ angular.module('services.authentication', ['angular-storage'])
 
                         store.set('globals', $rootScope.globals);
                         
-                        this.SetAuthorization($rootScope.globals.authData);
+                        this.SetAuthorization(authData);
                     },
                     
                     ClearCredentials: function () {

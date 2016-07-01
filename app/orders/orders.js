@@ -1,15 +1,17 @@
 angular.module('orders', ['resources.orders'])
-    .constant('totalsConfig', {
-            specialCase: "{{ ItemName }}", //adds items from nested options
+    .constant('cfg', {
+            specialCase: "^coffee", //"{{ ItemName }}", //adds items from nested options
             removeParent: true, //removes parent item from list if nested item found
 
             nameReplacePattern: "gift|subscription", //removes these values from item names
 
-            specialItemName: "{{ ItemName }}", //if item name is this
-            specialItemNewName: "{{ ItemName }}", //replaces it with this
+            specialItemName: "New Orleans Style",//"{{ ItemName }}", //if item name matches this
+            specialItemNewName: "Sumatra", //"{{ ItemName }}", //replaces it with this
             specialItemWeight: "5lb|5 lb", //if special item weight matches this
             specialItemNewWeight: "3.6", //replace it with this
             specialItemNewWeightUnits: "lbs", //and unit with these
+
+            ignoreItemsNameWith: "shirt|towel|mug|tumbler|baby|sock|card|glass|patch|pour", //{{ IgnoredItem }} does not total items that match these keys
 
             defaultProductWeight: "12", //sets a default weight for new nested products added
             defaultProductUnits: "ounces",//sets a default unit value for new nested products added
@@ -53,8 +55,8 @@ angular.module('orders', ['resources.orders'])
             }])
 
     .controller('TotalsCtrl', 
-        ['$scope', 'orders', 'totalsConfig', 'usSpinnerService', 
-            function ($scope, orders, totalsConfig, usSpinnerService) {
+        ['$scope', 'orders', 'cfg', 'usSpinnerService', 
+            function ($scope, orders, cfg, usSpinnerService) {
                 var tc = this;
         
                 var init = function () {
@@ -72,11 +74,11 @@ angular.module('orders', ['resources.orders'])
                 tc.Process = function (orders) {
                     var v = {};
         
-                    var specialCase = totalsConfig.specialCase; //adds items from nested options
-                    var removeParent = totalsConfig.removeParent; //removes parent item from list if nested item found
-                    var productWeight = totalsConfig.defaultProductWeight; //sets a default weight for new nested products added
-                    var productUnits = totalsConfig.defaultProductUnits; //sets a default unit value for new nested products added
-                    var weightFilter = totalsConfig.displayWeightAs; //converts totals to this unit of measurement
+                    var specialCase = cfg.specialCase; //adds items from nested options
+                    var removeParent = cfg.removeParent; //removes parent item from list if nested item found
+                    var productWeight = cfg.defaultProductWeight; //sets a default weight for new nested products added
+                    var productUnits = cfg.defaultProductUnits; //sets a default unit value for new nested products added
+                    var weightFilter = cfg.displayWeightAs; //converts totals to this unit of measurement
 
                     for (var x in orders) {
         
@@ -117,24 +119,26 @@ angular.module('orders', ['resources.orders'])
                                 }
                             }
 
-                            //if not a nested option and weight is more than 0
-                            if (!skipItem && items[i].weight.value > 0) {
+                            var ignoreItem = new RegExp(cfg.ignoreItemsNameWith, 'gi');
+
+                            //if not a nested option and weight is more than 0 and not an ignored item
+                            if (!skipItem && items[i].weight.value > 0 && !items[i].name.match(ignoreItem)) {
                                 //if name contains regex remove words
-                                var pattern = new RegExp(totalsConfig.nameReplacePattern, 'gi'); //case insensitive
+                                var pattern = new RegExp(cfg.nameReplacePattern, 'gi'); //case insensitive
                                 var itemName = items[i].name.replace(pattern, "").trim();
 
                                 var itemSKU = items[i].sku;
 
                                 //if item name matches regex replace entire name
-                                var nameRegex = new RegExp(totalsConfig.specialItemName, 'gi');
+                                var nameRegex = new RegExp(cfg.specialItemName, 'gi');
                                 if (itemName.match(nameRegex)) {
-                                    itemName = totalsConfig.specialItemNewName;
+                                    itemName = cfg.specialItemNewName;
 
                                     //if sku contains regex change to new weight
-                                    var skuRegex = new RegExp(totalsConfig.specialItemWeight, 'gi');
+                                    var skuRegex = new RegExp(cfg.specialItemWeight, 'gi');
                                     if (itemSKU.match(skuRegex)) {
-                                        items[i].weight.value = totalsConfig.specialItemNewWeight;
-                                        items[i].weight.units = totalsConfig.specialItemNewWeightUnits;
+                                        items[i].weight.value = cfg.specialItemNewWeight;
+                                        items[i].weight.units = cfg.specialItemNewWeightUnits;
                                     }
                                 }
 
