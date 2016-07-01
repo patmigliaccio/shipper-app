@@ -1,21 +1,24 @@
 angular.module('orders', ['resources.orders'])
     .constant('cfg', {
-            specialCase: "^coffee", //"{{ ItemName }}", //adds items from nested options
+            specialCase: "{{ ItemName }}", //adds items from nested options
             removeParent: true, //removes parent item from list if nested item found
 
             nameReplacePattern: "gift|subscription", //removes these values from item names
 
-            specialItemName: "New Orleans Style",//"{{ ItemName }}", //if item name matches this
-            specialItemNewName: "Sumatra", //"{{ ItemName }}", //replaces it with this
+            specialItemName: "{{ ItemName }}", //if item name matches this
+            specialItemNewName: "{{ ItemName }}", //replaces it with this
             specialItemWeight: "5lb|5 lb", //if special item weight matches this
             specialItemNewWeight: "3.6", //replace it with this
             specialItemNewWeightUnits: "lbs", //and unit with these
 
-            ignoreItemsNameWith: "shirt|towel|mug|tumbler|baby|sock|card|glass|patch|pour", //{{ IgnoredItem }} does not total items that match these keys
+            ignoreItemsNameWith: "{{ IgnoredItem(s) }}", //does not total items that match these keys
 
             defaultProductWeight: "12", //sets a default weight for new nested products added
             defaultProductUnits: "ounces",//sets a default unit value for new nested products added
-            displayWeightAs: "lbs" //converts totals to this unit of measurement
+            displayWeightAs: "lbs", //converts totals to this unit of measurement
+
+            productSortOrder: [
+            ]
         })
 
     .controller('OrdersCtrl', 
@@ -55,7 +58,7 @@ angular.module('orders', ['resources.orders'])
             }])
 
     .controller('TotalsCtrl', 
-        ['$scope', 'orders', 'cfg', 'usSpinnerService', 
+        ['$scope', 'orders', 'cfg', 'usSpinnerService',
             function ($scope, orders, cfg, usSpinnerService) {
                 var tc = this;
         
@@ -181,10 +184,23 @@ angular.module('orders', ['resources.orders'])
                         }
         
                     }
-        
-                    return $.map(v, function (value) {
-                        return [value];
-                    });
+
+                    var sortKey = cfg.productSortOrder;
+
+                    //sort object and put in array
+                    var totals = [];
+                    for (var k = 0; i < sortKey.length; i++){
+                        for(var product in v){
+                            if (v[product].item_name.toLowerCase().indexOf(sortKey[k]) > -1){
+                                totals.push(v[product]);
+                            }
+                        }
+                    }
+
+                    //TODO catch values not in sort key
+                    //TODO move sorting to a filter
+
+                    return totals;
                 };
         
                 init();
