@@ -15,7 +15,7 @@
         <div class="col-sm-6">Total Weight</div>
     </div>
 
-    <div class="row order-row" ng-repeat="total in tc.totals">
+    <div class="row order-row" ng-repeat="total in tc.totals track by $index">
         <div class="col-xs-6">{{ total.item_name }}</div>
         <div class="col-xs-6">{{ total.total_weight }} {{total.item_weight_units}}</div>
     </div>
