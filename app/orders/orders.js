@@ -1,23 +1,24 @@
 angular.module('orders', ['resources.orders'])
     .constant('cfg', {
-            nestedItemSKUPrefix: "",
-            specialCase: "", //adds items from nested options
-            removeParent: true, //removes parent item from list if nested item found
+            productKey: { //product sku prefixes with corresponding items
+                "XXXX":"Product #1"
+            },
+        
+            //SETTINGS
+            nestedItemSKUPrefix: "", //checks for nested options if sku begins with (default: "")
+            specialCase: "", //adds item if option matches this (default: no match)
+            removeParent: true, //removes parent item from list if nested item found (default: true)
 
-            specialItemSKUPrefix: "", //if item name matches this
-            specialItemNewSKUPrefix: "", //replaces it with this
-            specialItemNewWeight: "", //replace it with this
-            specialItemNewWeightUnits: "lbs", //and unit with these
+            ignoredItemsSKUPrefix: "", //ignores item is sku begins with (default: "")
+        
+            specialItemSKUPrefix: "", //if item sku prefix is this (default: "")
+            specialItemNewSKUPrefix: "", //replace it with this (default: "")
+            specialItemWeightUnits: "lbs", // and if is in units of this (default: lbs)
+            specialItemNewWeight: "", //give it a weight of this (default: 1)
 
-            ignoredItemsSKUPrefix: "", //does not total items that match this sku
-
-            defaultProductWeight: "12", //sets a default weight for new nested products added
-            defaultProductUnits: "ounces",//sets a default unit value for new nested products added
-            displayWeightAs: "lbs", //converts totals to this unit of measurement
-
-            productKey: {
-
-            }
+            defaultProductWeight: "1", //sets a default weight for new nested products added (default: 1)
+            defaultProductUnits: "ounces",//sets a default unit value for new nested products added (default: ounces)
+            displayWeightAs: "lbs" //converts totals to this unit of measurement (default: lbs)
         })
 
     .controller('OrdersCtrl', 
@@ -76,12 +77,22 @@ angular.module('orders', ['resources.orders'])
                 tc.Process = function (orders) {
                     var totals = {};
 
-                    var itemKey = cfg.productKey; //product sku prefixes with corresponding items
-                    var specialCase = cfg.specialCase; //adds items from nested options
+                    var itemKey = cfg.productKey || []; //product sku prefixes with corresponding items
+
+                    var ignoredItemsSKUPrefix = cfg.ignoredItemsSKUPrefix || ''; //ignores item is sku begins with
+                    
+                    var nestedItemSKUPrefix = cfg.nestedItemSKUPrefix || ''; //checks for nested options if sku begins with
+                    var specialCase = cfg.specialCase || 'a^'; //adds item if option matches this
                     var removeParent = cfg.removeParent; //removes parent item from list if nested item found
-                    var productWeight = cfg.defaultProductWeight; //sets a default weight for new nested products added
-                    var productUnits = cfg.defaultProductUnits; //sets a default unit value for new nested products added
-                    var weightFilter = cfg.displayWeightAs; //converts totals to this unit of measurement
+
+                    var specialItemSKUPrefix = cfg.specialItemSKUPrefix || ""; //if item sku prefix is this
+                    var specialItemNewSKUPrefix = cfg.specialItemNewSKUPrefix || ""; //replace it with this
+                    var specialItemWeightUnits = cfg.specialItemWeightUnits || "lbs"; // and if is in units of this
+                    var specialItemNewWeight = cfg.specialItemNewWeight || "1"; //give it a weight of this
+                    
+                    var productWeight = cfg.defaultProductWeight || '1'; //sets a default weight for new nested products added
+                    var productUnits = cfg.defaultProductUnits || 'lbs'; //sets a default unit value for new nested products added
+                    var weightFilter = cfg.displayWeightAs || 'lbs'; //converts totals to this unit of measurement
 
                     for (var x in orders) {
         
@@ -100,7 +111,7 @@ angular.module('orders', ['resources.orders'])
                             var product = sku.split('-');
 
                             //loop through options attributes of products for nested products
-                            if (product[0] == cfg.nestedItemSKUPrefix){
+                            if (product[0] == nestedItemSKUPrefix){
                                 for(var o in items[i].options){
 
                                     var itemOption;
@@ -125,49 +136,11 @@ angular.module('orders', ['resources.orders'])
 
                                         itemLength++;
 
-                                        nestedItem = removeParent && true;
+                                        nestedItem = removeParent;
                                     }
                                 }
                                 //skip if ignored item sku or nested item
-                            } else if (product[0] != cfg.ignoredItemsSKUPrefix && !nestedItem){
-
-                                if (product[0] == cfg.specialItemSKUPrefix) {
-                                    product[0] = cfg.specialItemNewSKUPrefix;
-
-                                    items[i].weight.value = cfg.specialItemNewWeight;
-                                    items[i].weight.units = cfg.specialItemNewWeightUnits;
-                                }
-
-                                //if not already in final array add it
-                                if (!totals[product[0]]) {
-                                    var itemName = itemKey[product[0]] || product[0];
-
-                                    totals[product[0]] = {
-                                        item_name: itemName,
-                                        item_sku: product[0],
-                                        twelve_ounce_count: 0,
-                                        five_pound_count: 0,
-                                        twelve_sub_count: 0,
-                                        five_sub_count: 0,
-                                        total_weight: 0,
-                                        item_weight_units: weightFilter
-                                    };
-                                }
-
-                                //sum different product types
-/*                                if (itemSKU.indexOf('Subscription') > -1 || itemSKU.indexOf('Sub') > -1) {
-                                    if (itemSKU.indexOf('5lb') > -1 || itemSKU.indexOf('5 lb') > -1) {
-                                        v[itemName].five_sub_count++;
-                                    } else {
-                                        v[itemName].twelve_sub_count++;
-                                    }
-                                } else {
-                                    if (itemSKU.indexOf('5lb') > -1 || itemSKU.indexOf('5 lb') > -1) {
-                                        v[itemName].five_pound_count++;
-                                    } else {
-                                        v[itemName].twelve_ounce_count++;
-                                    }
-                                }*/
+                            } else if (product[0] != ignoredItemsSKUPrefix && !nestedItem){
 
                                 //set weight from attribute if it exists
                                 for(var opt in items[i].options){
@@ -176,6 +149,41 @@ angular.module('orders', ['resources.orders'])
                                         items[i].weight.value = w[0];
                                         items[i].weight.units = w[1];
                                     }
+                                }
+
+                                //special item value/units change
+                                if (product[0] == specialItemSKUPrefix) {
+                                    product[0] = specialItemNewSKUPrefix;
+
+                                    if (items[i].weight.units == specialItemWeightUnits) items[i].weight.value = specialItemNewWeight;
+                                }
+
+                                //if sku not already in final array add it
+                                if (!totals[product[0]]) {
+                                    var itemName = itemKey[product[0]] || product[0];
+
+                                    totals[product[0]] = {
+                                        item_name: itemName,
+                                        //item_sku: product[0],
+                                        ounce_count: 0,
+                                        pound_count: 0,
+                                        sub_count: 0,
+                                        total_weight: 0,
+                                        item_weight_units: weightFilter
+                                    };
+                                }
+
+                                //sum different product types by second half of sku naming convention
+                                if (product[1]){
+                                    //first char is number vs. letter (e.g. XXXX-0000 vs. XXXX-A000)
+                                    var firstChar = product[1].charAt(0);
+                                    if (firstChar.isNumeric()){
+                                        items[i].weight.units == "ounces" || items[i].weight.units == "oz" ? totals[product[0]].ounce_count++ : totals[product[0]].pound_count++;
+                                    } else {
+                                        totals[product[0]].sub_count++;
+                                    }
+                                } else { //no second half exists
+                                    totals[product[0]].ounce_count++
                                 }
 
                                 //convert ounces to pounds if filter is set to lbs
@@ -190,7 +198,7 @@ angular.module('orders', ['resources.orders'])
         
                     }
 
-                    //sort object and put in array
+                    //sort array based on product key order
                     var outTotals = [];
                     for (var item in itemKey){
                         for(var obj in totals){
@@ -200,13 +208,14 @@ angular.module('orders', ['resources.orders'])
                         }
                     }
 
-                    //TODO catch values not in sort key
-                    //TODO move sorting to a filter
-
                     return outTotals;
                 };
         
                 init();
-        
-                //TODO add export function that simplifies and sorts the tc.totals array
+
             }]);
+
+
+String.prototype.isNumeric = function() {
+    return !isNaN(parseFloat(this)) && isFinite(this);
+};

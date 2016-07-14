@@ -1,2 +1,4 @@
-.idea
-data/
+.idea/
+safe/
+/.htpasswd
+/.htaccess
