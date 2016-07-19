@@ -1,3 +1,8 @@
+'use strict';
+
+var angular = require('angular');
+require('./libs');
+
 angular.module('ShipperApp', [
     'ui.router',
     'ngSanitize',
@@ -65,14 +70,8 @@ angular.module('ShipperApp', [
             });
         }]);
 
-
-
-//serialize JSON into queryString
-var serialize = function(obj) {
-    var str = [];
-    for(var p in obj)
-        if (obj.hasOwnProperty(p)) {
-            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-        }
-    return str.join("&");
-};
+require('./services');
+require('./resources');
+require('./home');
+require('./login');
+require('./orders');

@@ -1,3 +1,5 @@
+var serialize = require('./serialize');
+
 angular.module('services.interceptor', [])
     
     .factory('interceptor', ['$q', '$rootScope', function($q, $rootScope){

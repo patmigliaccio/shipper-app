@@ -14,41 +14,35 @@
 @media (min-width: 768px) {
   .text-sm-left {
     text-align: left; }
-
   .text-sm-right {
     text-align: right; }
-
   .text-sm-center {
     text-align: center; }
-
   .text-sm-justify {
     text-align: justify; } }
+
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {
   .text-md-left {
     text-align: left; }
-
   .text-md-right {
     text-align: right; }
-
   .text-md-center {
     text-align: center; }
-
   .text-md-justify {
     text-align: justify; } }
+
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
   .text-lg-left {
     text-align: left; }
-
   .text-lg-right {
     text-align: right; }
-
   .text-lg-center {
     text-align: center; }
-
   .text-lg-justify {
     text-align: justify; } }
+
 select, button, input {
   margin-top: 10px; }
 
@@ -68,41 +62,35 @@ select, button, input {
 @media (min-width: 768px) {
   .text-sm-left {
     text-align: left; }
-
   .text-sm-right {
     text-align: right; }
-
   .text-sm-center {
     text-align: center; }
-
   .text-sm-justify {
     text-align: justify; } }
+
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {
   .text-md-left {
     text-align: left; }
-
   .text-md-right {
     text-align: right; }
-
   .text-md-center {
     text-align: center; }
-
   .text-md-justify {
     text-align: justify; } }
+
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
   .text-lg-left {
     text-align: left; }
-
   .text-lg-right {
     text-align: right; }
-
   .text-lg-center {
     text-align: center; }
-
   .text-lg-justify {
     text-align: justify; } }
+
 ul.nav {
   margin-top: 8px;
   margin-bottom: 1.618em;
@@ -123,11 +111,13 @@ ul.nav > li a {
   -ms-transition: all 0.3s ease 0s;
   /* IE 9 */
   transition: all 0.3s ease 0s; }
+
 ul.nav > li:hover a, ul.nav > li.active a {
   border: 1px solid #AAAEB4 !important;
   color: #82858a !important;
   font-weight: 200;
   background-color: #fff !important; }
+
 ul.nav > li.active a {
   color: #232323 !important; }
 
@@ -183,5 +173,3 @@ input[type=text], input[type=password] {
   height: 60px;
   margin-top: -60px;
   padding-top: 60px; }
-
-/*# sourceMappingURL=styles.css.map */

@@ -2,3 +2,4 @@
 safe/
 /.htpasswd
 /.htaccess
+/node_modules/

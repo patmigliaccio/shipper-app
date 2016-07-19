@@ -5,21 +5,10 @@
     <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/styles.css" />
 
-    <!-- JS --> <!-- TODO bundle scripts -->
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <!-- JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.2.4.min.js"></script>
     <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
-    <script type="text/javascript" src="assets/libs/angular-ui-router.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular-resource.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular-animate.min.js"></script>
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-sanitize.js"></script>
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-cookies.js"></script>
-    <script type="text/javascript" src="assets/libs/angular-storage.min.js"></script>
-    <script type="text/javascript" src="assets/libs/angular-modal-service.min.js"></script>
-    <script type="text/javascript" src="assets/libs/spin.min.js"></script>
-    <script type="text/javascript" src="assets/libs/angular-spinner.min.js"></script>
-    <script type="text/javascript" src="assets/libs/ng-csv.min.js"></script>
+    <script type="text/javascript" src="app/bundle.js"></script>
 
     <base href="." />
 
@@ -28,7 +17,7 @@
     <title>ShipStation Order Manager</title>
 </head>
 <body>
-    <div class="row main-container" ng-controller="AppCtrl as ac">
+<div class="row main-container" ng-controller="AppCtrl as ac">
         <div class="row header">
             <a ui-sref="home">
                 <h2 class="col-xs-12 col-sm-4 col-md-4 col-lg-4">ShipStation App</h2>
@@ -56,15 +45,5 @@
             <p class="col-xs-12">GitHub <a href="https://github.com/pmigliaccio" target="_blank">@pmigliaccio</a></p>
         </div>
     </div>
-
-    <!-- AngularJS --> <!-- TODO bundle scripts -->
-    <script type="text/javascript" src="app/app.js"></script>
-    <script type="text/javascript" src="app/services/authentication.js"></script>
-    <script type="text/javascript" src="app/services/interceptor.js"></script>
-    <script type="text/javascript" src="app/resources/accounts.js"></script>
-    <script type="text/javascript" src="app/resources/orders.js"></script>
-    <script type="text/javascript" src="app/home/home.js"></script>
-    <script type="text/javascript" src="app/login/login.js"></script>
-    <script type="text/javascript" src="app/orders/orders.js"></script>
 </body>
 </html>
