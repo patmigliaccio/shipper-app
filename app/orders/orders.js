@@ -3,14 +3,14 @@ angular.module('orders', ['resources.orders'])
             productKey: { //product sku prefixes with corresponding items
                 "XXXX":"Product #1"
             },
-        
+
             //SETTINGS
             nestedItemSKUPrefix: "", //checks for nested options if sku begins with (default: "")
             specialCase: "", //adds item if option matches this (default: no match)
             removeParent: true, //removes parent item from list if nested item found (default: true)
 
             ignoredItemsSKUPrefix: "", //ignores item is sku begins with (default: "")
-        
+
             specialItemSKUPrefix: "", //if item sku prefix is this (default: "")
             specialItemNewSKUPrefix: "", //replace it with this (default: "")
             specialItemWeightUnits: "lbs", // and if is in units of this (default: lbs)
@@ -105,6 +105,16 @@ angular.module('orders', ['resources.orders'])
 
                         for (var i = 0; i < itemLength; i++) {
                             var nestedItem = false;
+
+                            //add items to array if there is more than one ordered in quantity
+                            //will cause issues at scale for large orders of the same product
+                            if (items[i].hasOwnProperty('quantity')){
+                                if (items[i].quantity > 1){
+                                    items[i].quantity--;
+                                    items.push(items[i]);
+                                    itemLength++;
+                                }
+                            }
 
                             var sku = items[i].sku;
                             //split sku by categorized delimiter
