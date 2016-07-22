@@ -77,7 +77,7 @@ require('./home');
 require('./login');
 require('./orders');
 
-},{"./home":3,"./libs":8,"./login":10,"./orders":12,"./resources":15,"./services":18,"angular":30}],2:[function(require,module,exports){
+},{"./home":3,"./libs":8,"./login":10,"./orders":12,"./resources":16,"./services":19,"angular":31}],2:[function(require,module,exports){
 angular.module('home', [])
     
     .controller('HomeCtrl', ['$scope', function ($scope) {
@@ -236,7 +236,7 @@ require('./home');
 	}
 }(this));
 
-},{"angular":30,"spin":31}],6:[function(require,module,exports){
+},{"angular":31,"spin":32}],6:[function(require,module,exports){
 !function(){angular.module("angular-storage",["angular-storage.store"]),angular.module("angular-storage.cookieStorage",[]).service("cookieStorage",["$cookies",function(e){this.set=function(t,r){return e.put(t,r)},this.get=function(t){return e.get(t)},this.remove=function(t){return e.remove(t)}}]),angular.module("angular-storage.internalStore",["angular-storage.localStorage","angular-storage.sessionStorage"]).factory("InternalStore",["$log","$injector",function(e,t){function r(e,r,o,a){this.namespace=e||null,(angular.isUndefined(a)||null==a)&&(a=!0),this.useCache=a,this.delimiter=o||".",this.inMemoryCache={},this.storage=t.get(r||"localStorage")}return r.prototype.getNamespacedKey=function(e){return this.namespace?[this.namespace,e].join(this.delimiter):e},r.prototype.set=function(e,t){this.useCache&&(this.inMemoryCache[e]=t),this.storage.set(this.getNamespacedKey(e),JSON.stringify(t))},r.prototype.get=function(t){var r=null;if(this.useCache&&t in this.inMemoryCache)return this.inMemoryCache[t];var o=this.storage.get(this.getNamespacedKey(t));try{r="undefined"==typeof o||"undefined"===o?void 0:JSON.parse(o),this.useCache&&(this.inMemoryCache[t]=r)}catch(a){e.error("Error parsing saved value",a),this.remove(t)}return r},r.prototype.remove=function(e){this.useCache&&(this.inMemoryCache[e]=null),this.storage.remove(this.getNamespacedKey(e))},r}]),angular.module("angular-storage.localStorage",["angular-storage.cookieStorage"]).service("localStorage",["$window","$injector",function(e,t){var r;try{e.localStorage.setItem("testKey","test"),e.localStorage.removeItem("testKey"),r=!0}catch(o){r=!1}if(r)this.set=function(t,r){return e.localStorage.setItem(t,r)},this.get=function(t){return e.localStorage.getItem(t)},this.remove=function(t){return e.localStorage.removeItem(t)},this.clear=function(){e.localStorage.clear()};else{var a=t.get("cookieStorage");this.set=a.set,this.get=a.get,this.remove=a.remove}}]),angular.module("angular-storage.sessionStorage",["angular-storage.cookieStorage"]).service("sessionStorage",["$window","$injector",function(e,t){var r;try{e.sessionStorage.setItem("testKey","test"),e.sessionStorage.removeItem("testKey"),r=!0}catch(o){r=!1}if(r)this.set=function(t,r){return e.sessionStorage.setItem(t,r)},this.get=function(t){return e.sessionStorage.getItem(t)},this.remove=function(t){return e.sessionStorage.removeItem(t)};else{var a=t.get("cookieStorage");this.set=a.set,this.get=a.get,this.remove=a.remove}}]),angular.module("angular-storage.store",["angular-storage.internalStore"]).provider("store",function(){var e="localStorage",t=!0;this.setStore=function(t){t&&angular.isString(t)&&(e=t)},this.setCaching=function(e){t=!!e},this.$get=["InternalStore",function(r){var o=new r(null,e,null,t);return o.getNamespacedStore=function(e,t,o,a){return new r(e,t,o,a)},o}]})}();
 },{}],7:[function(require,module,exports){
 /**
@@ -260,7 +260,7 @@ require('./angular-modal-service.min');
 require('./ng-csv.min');
 require('spin');
 require('./angular-spinner');
-},{"./angular-modal-service.min":4,"./angular-spinner":5,"./angular-storage.min":6,"./angular-ui-router.min":7,"./ng-csv.min":9,"angular-animate":22,"angular-cookies":24,"angular-resource":26,"angular-sanitize":28,"spin":31}],9:[function(require,module,exports){
+},{"./angular-modal-service.min":4,"./angular-spinner":5,"./angular-storage.min":6,"./angular-ui-router.min":7,"./ng-csv.min":9,"angular-animate":23,"angular-cookies":25,"angular-resource":27,"angular-sanitize":29,"spin":32}],9:[function(require,module,exports){
 /*! ng-csv 10-10-2015 */
 !function(a){angular.module("ngCsv.config",[]).value("ngCsv.config",{debug:!0}).config(["$compileProvider",function(a){angular.isDefined(a.urlSanitizationWhitelist)?a.urlSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|data):/):a.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|data):/)}]),angular.module("ngCsv.directives",["ngCsv.services"]),angular.module("ngCsv.services",[]),angular.module("ngCsv",["ngCsv.config","ngCsv.services","ngCsv.directives","ngSanitize"]),"undefined"!=typeof module&&"undefined"!=typeof exports&&module.exports===exports&&(module.exports="ngCsv"),angular.module("ngCsv.services").service("CSV",["$q",function(a){var b="\r\n",c="﻿",d={"\\t":"	","\\b":"\b","\\v":"","\\f":"\f","\\r":"\r"};this.stringifyField=function(a,b){return"locale"===b.decimalSep&&this.isFloat(a)?a.toLocaleString():"."!==b.decimalSep&&this.isFloat(a)?a.toString().replace(".",b.decimalSep):"string"==typeof a?(a=a.replace(/"/g,'""'),(b.quoteStrings||a.indexOf(",")>-1||a.indexOf("\n")>-1||a.indexOf("\r")>-1)&&(a=b.txtDelim+a+b.txtDelim),a):"boolean"==typeof a?a?"TRUE":"FALSE":a},this.isFloat=function(a){return+a===a&&(!isFinite(a)||Boolean(a%1))},this.stringify=function(d,e){var f=a.defer(),g=this,h="",i="",j=a.when(d).then(function(a){if(angular.isDefined(e.header)&&e.header){var d,j;d=[],angular.forEach(e.header,function(a){this.push(g.stringifyField(a,e))},d),j=d.join(e.fieldSep?e.fieldSep:","),i+=j+b}var k=[];if(angular.isArray(a)?k=a:angular.isFunction(a)&&(k=a()),angular.isDefined(e.label)&&e.label&&"boolean"==typeof e.label){var l,m;l=[],angular.forEach(k[0],function(a,b){this.push(g.stringifyField(b,e))},l),m=l.join(e.fieldSep?e.fieldSep:","),i+=m+b}angular.forEach(k,function(a,c){var d,f,h=angular.copy(k[c]);f=[];var j=e.columnOrder?e.columnOrder:h;angular.forEach(j,function(a){var b=e.columnOrder?h[a]:a;this.push(g.stringifyField(b,e))},f),d=f.join(e.fieldSep?e.fieldSep:","),i+=c<k.length?d+b:d}),e.addByteOrderMarker&&(h+=c),h+=i,f.resolve(h)});return"function"==typeof j["catch"]&&j["catch"](function(a){f.reject(a)}),f.promise},this.isSpecialChar=function(a){return void 0!==d[a]},this.getSpecialChar=function(a){return d[a]}}]),angular.module("ngCsv.directives").directive("ngCsv",["$parse","$q","CSV","$document","$timeout",function(b,c,d,e,f){return{restrict:"AC",scope:{data:"&ngCsv",filename:"@filename",header:"&csvHeader",columnOrder:"&csvColumnOrder",txtDelim:"@textDelimiter",decimalSep:"@decimalSeparator",quoteStrings:"@quoteStrings",fieldSep:"@fieldSeparator",lazyLoad:"@lazyLoad",addByteOrderMarker:"@addBom",ngClick:"&",charset:"@charset",label:"&csvLabel"},controller:["$scope","$element","$attrs","$transclude",function(a,b,e){function f(){var b={txtDelim:a.txtDelim?a.txtDelim:'"',decimalSep:a.decimalSep?a.decimalSep:".",quoteStrings:a.quoteStrings,addByteOrderMarker:a.addByteOrderMarker};return angular.isDefined(e.csvHeader)&&(b.header=a.$eval(a.header)),angular.isDefined(e.csvColumnOrder)&&(b.columnOrder=a.$eval(a.columnOrder)),angular.isDefined(e.csvLabel)&&(b.label=a.$eval(a.label)),b.fieldSep=a.fieldSep?a.fieldSep:",",b.fieldSep=d.isSpecialChar(b.fieldSep)?d.getSpecialChar(b.fieldSep):b.fieldSep,b}a.csv="",angular.isDefined(a.lazyLoad)&&"true"==a.lazyLoad||angular.isArray(a.data)&&a.$watch("data",function(){a.buildCSV()},!0),a.getFilename=function(){return a.filename||"download.csv"},a.buildCSV=function(){var g=c.defer();return b.addClass(e.ngCsvLoadingClass||"ng-csv-loading"),d.stringify(a.data(),f()).then(function(c){a.csv=c,b.removeClass(e.ngCsvLoadingClass||"ng-csv-loading"),g.resolve(c)}),a.$apply(),g.promise}}],link:function(b,c){function d(){var c=b.charset||"utf-8",d=new Blob([b.csv],{type:"text/csv;charset="+c+";"});if(a.navigator.msSaveOrOpenBlob)navigator.msSaveBlob(d,b.getFilename());else{var g=angular.element('<div data-tap-disabled="true"><a></a></div>'),h=angular.element(g.children()[0]);h.attr("href",a.URL.createObjectURL(d)),h.attr("download",b.getFilename()),h.attr("target","_blank"),e.find("body").append(g),f(function(){h[0].click(),h.remove()},null)}}c.bind("click",function(){b.buildCSV().then(function(){d()}),b.$apply()})}}}])}(window,document);
 },{}],10:[function(require,module,exports){
@@ -329,31 +329,10 @@ angular.module('login', ['services.authentication', 'angularModalService'])
 },{}],12:[function(require,module,exports){
 'use strict';
 
+require('./totalingService');
 require('./orders');
-},{"./orders":13}],13:[function(require,module,exports){
-angular.module('orders', ['resources.orders'])
-    .constant('cfg', {
-            productKey: { //product sku prefixes with corresponding items
-                "XXXX":"Product #1"
-            },
-        
-            //SETTINGS
-            nestedItemSKUPrefix: "", //checks for nested options if sku begins with (default: "")
-            specialCase: "", //adds item if option matches this (default: no match)
-            removeParent: true, //removes parent item from list if nested item found (default: true)
-
-            ignoredItemsSKUPrefix: "", //ignores item is sku begins with (default: "")
-        
-            specialItemSKUPrefix: "", //if item sku prefix is this (default: "")
-            specialItemNewSKUPrefix: "", //replace it with this (default: "")
-            specialItemWeightUnits: "lbs", // and if is in units of this (default: lbs)
-            specialItemNewWeight: "", //give it a weight of this (default: 1)
-
-            defaultProductWeight: "1", //sets a default weight for new nested products added (default: 1)
-            defaultProductUnits: "ounces",//sets a default unit value for new nested products added (default: ounces)
-            displayWeightAs: "lbs" //converts totals to this unit of measurement (default: lbs)
-        })
-
+},{"./orders":13,"./totalingService":14}],13:[function(require,module,exports){
+angular.module('orders', ['resources.orders', 'services.totaling'])
     .controller('OrdersCtrl', 
         ['$scope', 'orders', 'usSpinnerService', 
             function ($scope, orders, usSpinnerService) {
@@ -391,8 +370,8 @@ angular.module('orders', ['resources.orders'])
             }])
 
     .controller('TotalsCtrl', 
-        ['$scope', 'orders', 'cfg', 'usSpinnerService',
-            function ($scope, orders, cfg, usSpinnerService) {
+        ['$scope', 'orders', 'totaling', 'usSpinnerService',
+            function ($scope, orders, totaling, usSpinnerService) {
                 var tc = this;
         
                 var init = function () {
@@ -400,20 +379,56 @@ angular.module('orders', ['resources.orders'])
         
                     orders.get({ orderStatus: 'awaiting_shipment', pageSize: 500 },
                         function(response){
-                            tc.totals = tc.Process(response.orders);
+                            tc.totals = totaling.Process(response.orders);
                             usSpinnerService.stop('spinner');
                         });
-        
                 };
         
+                init();
+
+            }]);
+
+
+String.prototype.isNumeric = function() {
+    return !isNaN(parseFloat(this)) && isFinite(this);
+};
+
+},{}],14:[function(require,module,exports){
+angular.module('services.totaling', [])
+    .constant('cfg', {
+        productKey: { //product sku prefixes with corresponding items
+            "XXXX":"Product #1"
+        },
+
+        //SETTINGS
+        nestedItemSKUPrefix: "", //checks for nested options if sku begins with (default: "")
+        specialCase: "", //adds item if option matches this (default: no match)
+        removeParent: true, //removes parent item from list if nested item found (default: true)
+
+        ignoredItemsSKUPrefix: "", //ignores item is sku begins with (default: "")
+
+        specialItemSKUPrefix: "", //if item sku prefix is this (default: "")
+        specialItemNewSKUPrefix: "", //replace it with this (default: "")
+        specialItemWeightUnits: "lbs", // and if is in units of this (default: lbs)
+        specialItemNewWeight: "", //give it a weight of this (default: 1)
+
+        defaultProductWeight: "1", //sets a default weight for new nested products added (default: 1)
+        defaultProductUnits: "ounces",//sets a default unit value for new nested products added (default: ounces)
+        displayWeightAs: "lbs" //converts totals to this unit of measurement (default: lbs)
+    })
+    .factory('totalingService',
+        ['cfg',
+            function (cfg) {
+                var totaling = {};
+
                 //totals item weight values that have the same sku
-                tc.Process = function (orders) {
+                totaling.Process = function (orders) {
                     var totals = {};
 
                     var itemKey = cfg.productKey || []; //product sku prefixes with corresponding items
 
                     var ignoredItemsSKUPrefix = cfg.ignoredItemsSKUPrefix || ''; //ignores item is sku begins with
-                    
+
                     var nestedItemSKUPrefix = cfg.nestedItemSKUPrefix || ''; //checks for nested options if sku begins with
                     var specialCase = cfg.specialCase || 'a^'; //adds item if option matches this
                     var removeParent = cfg.removeParent; //removes parent item from list if nested item found
@@ -422,13 +437,13 @@ angular.module('orders', ['resources.orders'])
                     var specialItemNewSKUPrefix = cfg.specialItemNewSKUPrefix || ""; //replace it with this
                     var specialItemWeightUnits = cfg.specialItemWeightUnits || "lbs"; // and if is in units of this
                     var specialItemNewWeight = cfg.specialItemNewWeight || "1"; //give it a weight of this
-                    
+
                     var productWeight = cfg.defaultProductWeight || '1'; //sets a default weight for new nested products added
                     var productUnits = cfg.defaultProductUnits || 'lbs'; //sets a default unit value for new nested products added
                     var weightFilter = cfg.displayWeightAs || 'lbs'; //converts totals to this unit of measurement
 
                     for (var x in orders) {
-        
+
                         var items = [];
                         var itemLength = 0;
                         if (orders.hasOwnProperty(x)) {
@@ -439,23 +454,35 @@ angular.module('orders', ['resources.orders'])
                         for (var i = 0; i < itemLength; i++) {
                             var nestedItem = false;
 
+                            //add items to array if there is more than one ordered in quantity
+                            //will cause issues at scale for large orders of the same product
+                            if (items[i].hasOwnProperty('quantity')) {
+                                if (items[i].quantity > 1) {
+                                    items[i].quantity--;
+                                    items.push(items[i]);
+                                    itemLength++;
+                                }
+                            }
+
                             var sku = items[i].sku;
                             //split sku by categorized delimiter
                             var product = sku.split('-');
 
                             //loop through options attributes of products for nested products
-                            if (product[0] == nestedItemSKUPrefix){
-                                for(var o in items[i].options){
+                            if (product[0] == nestedItemSKUPrefix) {
+                                for (var o in items[i].options) {
 
                                     var itemOption;
                                     if (items[i].options.hasOwnProperty(o)) {
-                                       itemOption = items[i].options[o];
+                                        itemOption = items[i].options[o];
                                     }
 
-                                    var regex = new RegExp( specialCase, 'gi' ); //case insensitive
-                                    if (itemOption && itemOption.name.match(regex)){
+                                    var regex = new RegExp(specialCase, 'gi'); //case insensitive
+                                    if (itemOption && itemOption.name.match(regex)) {
 
-                                        var itemCode = Object.keys(itemKey).filter(function(key) {return itemKey[key] === itemOption.value})[0];
+                                        var itemCode = Object.keys(itemKey).filter(function (key) {
+                                            return itemKey[key] === itemOption.value
+                                        })[0];
 
                                         items.push({
                                             name: itemOption.value,
@@ -473,10 +500,10 @@ angular.module('orders', ['resources.orders'])
                                     }
                                 }
                                 //skip if ignored item sku or nested item
-                            } else if (product[0] != ignoredItemsSKUPrefix && !nestedItem){
+                            } else if (product[0] != ignoredItemsSKUPrefix && !nestedItem) {
 
                                 //set weight from attribute if it exists
-                                for(var opt in items[i].options){
+                                for (var opt in items[i].options) {
                                     if (items[i].options[opt].name.toLowerCase() == "weight") {
                                         var w = items[i].options[opt].value.split(' ');
                                         items[i].weight.value = w[0];
@@ -507,10 +534,10 @@ angular.module('orders', ['resources.orders'])
                                 }
 
                                 //sum different product types by second half of sku naming convention
-                                if (product[1]){
+                                if (product[1]) {
                                     //first char is number vs. letter (e.g. XXXX-0000 vs. XXXX-A000)
                                     var firstChar = product[1].charAt(0);
-                                    if (firstChar.isNumeric()){
+                                    if (firstChar.isNumeric()) {
                                         items[i].weight.units == "ounces" || items[i].weight.units == "oz" ? totals[product[0]].ounce_count++ : totals[product[0]].pound_count++;
                                     } else {
                                         totals[product[0]].sub_count++;
@@ -528,14 +555,14 @@ angular.module('orders', ['resources.orders'])
                                 totals[product[0]].total_weight += Number(items[i].weight.value);
                             }
                         }
-        
+
                     }
 
                     //sort array based on product key order
                     var outTotals = [];
-                    for (var item in itemKey){
-                        for(var obj in totals){
-                            if (obj.toUpperCase().indexOf(item) > -1){
+                    for (var item in itemKey) {
+                        for (var obj in totals) {
+                            if (obj.toUpperCase().indexOf(item) > -1) {
                                 outTotals.push(totals[obj]);
                             }
                         }
@@ -543,17 +570,10 @@ angular.module('orders', ['resources.orders'])
 
                     return outTotals;
                 };
-        
-                init();
 
+                return totaling;
             }]);
-
-
-String.prototype.isNumeric = function() {
-    return !isNaN(parseFloat(this)) && isFinite(this);
-};
-
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 angular.module('resources.accounts', [])
 
     .factory('accounts',
@@ -570,12 +590,12 @@ angular.module('resources.accounts', [])
                 });
 
     }]);
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 require('./accounts');
 require('./orders');
-},{"./accounts":14,"./orders":16}],16:[function(require,module,exports){
+},{"./accounts":15,"./orders":17}],17:[function(require,module,exports){
 angular.module('resources.orders', [])
 
     .factory('orders',
@@ -599,7 +619,7 @@ angular.module('resources.orders', [])
                 });
 
     }]);
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 angular.module('services.authentication', ['angular-storage'])
     
     .factory('authentication',
@@ -738,12 +758,12 @@ angular.module('services.authentication', ['angular-storage'])
         };
 
     });
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 require('./authentication');
 require('./interceptor');
-},{"./authentication":17,"./interceptor":19}],19:[function(require,module,exports){
+},{"./authentication":18,"./interceptor":20}],20:[function(require,module,exports){
 var serialize = require('./serialize');
 
 angular.module('services.interceptor', [])
@@ -792,7 +812,7 @@ angular.module('services.interceptor', [])
 
     }]);
 
-},{"./serialize":20}],20:[function(require,module,exports){
+},{"./serialize":21}],21:[function(require,module,exports){
 'use strict';
 
 //serialize JSON into queryString
@@ -806,7 +826,7 @@ var serialize = function(obj) {
 };
 
 module.exports = serialize;
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.9
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -4681,11 +4701,11 @@ angular.module('ngAnimate', [])
 
 })(window, window.angular);
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 require('./angular-animate');
 module.exports = 'ngAnimate';
 
-},{"./angular-animate":21}],23:[function(require,module,exports){
+},{"./angular-animate":22}],24:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.9
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -5008,11 +5028,11 @@ angular.module('ngCookies').provider('$$cookieWriter', function $$CookieWriterPr
 
 })(window, window.angular);
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 require('./angular-cookies');
 module.exports = 'ngCookies';
 
-},{"./angular-cookies":23}],25:[function(require,module,exports){
+},{"./angular-cookies":24}],26:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -5872,11 +5892,11 @@ angular.module('ngResource', ['ng']).
 
 })(window, window.angular);
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 require('./angular-resource');
 module.exports = 'ngResource';
 
-},{"./angular-resource":25}],27:[function(require,module,exports){
+},{"./angular-resource":26}],28:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.9
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -6561,11 +6581,11 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
 
 })(window, window.angular);
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 require('./angular-sanitize');
 module.exports = 'ngSanitize';
 
-},{"./angular-sanitize":27}],29:[function(require,module,exports){
+},{"./angular-sanitize":28}],30:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -38039,11 +38059,11 @@ $provide.value("$locale", {
 })(window);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":29}],31:[function(require,module,exports){
+},{"./angular":30}],32:[function(require,module,exports){
 //fgnass.github.com/spin.js#v1.2.5
 /**
  * Copyright (c) 2011 Felix Gnass [fgnass at neteye dot de]
