@@ -15,7 +15,8 @@ angular.module('ShipperApp', [
     'services.authentication',
     'home',
     'login',
-    'orders'])
+    'orders',
+    'subscriptions'])
     
     .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'storeProvider', '$httpProvider',
         function ($stateProvider, $urlRouterProvider, $locationProvider, storeProvider, $httpProvider) {
@@ -25,16 +26,6 @@ angular.module('ShipperApp', [
                 url: "/",
                 templateUrl: "app/home/home.tpl.html",
                 controller: "HomeCtrl as hc"
-            })
-            .state('orders', {
-                url: "/orders",
-                templateUrl: "app/orders/orders-list.tpl.html",
-                controller: "OrdersCtrl as oc"
-            })
-            .state('totals', {
-                url: "/totals",
-                templateUrl: "app/orders/orders-totals-list.tpl.html",
-                controller: "TotalsCtrl as tc"
             });
 
         $urlRouterProvider.otherwise("/");
@@ -75,3 +66,4 @@ require('./resources');
 require('./home');
 require('./login');
 require('./orders');
+require('./subscriptions');

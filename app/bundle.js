@@ -16,7 +16,8 @@ angular.module('ShipperApp', [
     'services.authentication',
     'home',
     'login',
-    'orders'])
+    'orders',
+    'subscriptions'])
     
     .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'storeProvider', '$httpProvider',
         function ($stateProvider, $urlRouterProvider, $locationProvider, storeProvider, $httpProvider) {
@@ -26,16 +27,6 @@ angular.module('ShipperApp', [
                 url: "/",
                 templateUrl: "app/home/home.tpl.html",
                 controller: "HomeCtrl as hc"
-            })
-            .state('orders', {
-                url: "/orders",
-                templateUrl: "app/orders/orders-list.tpl.html",
-                controller: "OrdersCtrl as oc"
-            })
-            .state('totals', {
-                url: "/totals",
-                templateUrl: "app/orders/orders-totals-list.tpl.html",
-                controller: "TotalsCtrl as tc"
             });
 
         $urlRouterProvider.otherwise("/");
@@ -76,8 +67,9 @@ require('./resources');
 require('./home');
 require('./login');
 require('./orders');
+require('./subscriptions');
 
-},{"./home":3,"./libs":8,"./login":10,"./orders":12,"./resources":16,"./services":19,"angular":31}],2:[function(require,module,exports){
+},{"./home":3,"./libs":8,"./login":10,"./orders":12,"./resources":16,"./services":19,"./subscriptions":22,"angular":35}],2:[function(require,module,exports){
 angular.module('home', [])
     
     .controller('HomeCtrl', ['$scope', function ($scope) {
@@ -236,7 +228,7 @@ require('./home');
 	}
 }(this));
 
-},{"angular":31,"spin":32}],6:[function(require,module,exports){
+},{"angular":35,"spin":36}],6:[function(require,module,exports){
 !function(){angular.module("angular-storage",["angular-storage.store"]),angular.module("angular-storage.cookieStorage",[]).service("cookieStorage",["$cookies",function(e){this.set=function(t,r){return e.put(t,r)},this.get=function(t){return e.get(t)},this.remove=function(t){return e.remove(t)}}]),angular.module("angular-storage.internalStore",["angular-storage.localStorage","angular-storage.sessionStorage"]).factory("InternalStore",["$log","$injector",function(e,t){function r(e,r,o,a){this.namespace=e||null,(angular.isUndefined(a)||null==a)&&(a=!0),this.useCache=a,this.delimiter=o||".",this.inMemoryCache={},this.storage=t.get(r||"localStorage")}return r.prototype.getNamespacedKey=function(e){return this.namespace?[this.namespace,e].join(this.delimiter):e},r.prototype.set=function(e,t){this.useCache&&(this.inMemoryCache[e]=t),this.storage.set(this.getNamespacedKey(e),JSON.stringify(t))},r.prototype.get=function(t){var r=null;if(this.useCache&&t in this.inMemoryCache)return this.inMemoryCache[t];var o=this.storage.get(this.getNamespacedKey(t));try{r="undefined"==typeof o||"undefined"===o?void 0:JSON.parse(o),this.useCache&&(this.inMemoryCache[t]=r)}catch(a){e.error("Error parsing saved value",a),this.remove(t)}return r},r.prototype.remove=function(e){this.useCache&&(this.inMemoryCache[e]=null),this.storage.remove(this.getNamespacedKey(e))},r}]),angular.module("angular-storage.localStorage",["angular-storage.cookieStorage"]).service("localStorage",["$window","$injector",function(e,t){var r;try{e.localStorage.setItem("testKey","test"),e.localStorage.removeItem("testKey"),r=!0}catch(o){r=!1}if(r)this.set=function(t,r){return e.localStorage.setItem(t,r)},this.get=function(t){return e.localStorage.getItem(t)},this.remove=function(t){return e.localStorage.removeItem(t)},this.clear=function(){e.localStorage.clear()};else{var a=t.get("cookieStorage");this.set=a.set,this.get=a.get,this.remove=a.remove}}]),angular.module("angular-storage.sessionStorage",["angular-storage.cookieStorage"]).service("sessionStorage",["$window","$injector",function(e,t){var r;try{e.sessionStorage.setItem("testKey","test"),e.sessionStorage.removeItem("testKey"),r=!0}catch(o){r=!1}if(r)this.set=function(t,r){return e.sessionStorage.setItem(t,r)},this.get=function(t){return e.sessionStorage.getItem(t)},this.remove=function(t){return e.sessionStorage.removeItem(t)};else{var a=t.get("cookieStorage");this.set=a.set,this.get=a.get,this.remove=a.remove}}]),angular.module("angular-storage.store",["angular-storage.internalStore"]).provider("store",function(){var e="localStorage",t=!0;this.setStore=function(t){t&&angular.isString(t)&&(e=t)},this.setCaching=function(e){t=!!e},this.$get=["InternalStore",function(r){var o=new r(null,e,null,t);return o.getNamespacedStore=function(e,t,o,a){return new r(e,t,o,a)},o}]})}();
 },{}],7:[function(require,module,exports){
 /**
@@ -260,7 +252,7 @@ require('./angular-modal-service.min');
 require('./ng-csv.min');
 require('spin');
 require('./angular-spinner');
-},{"./angular-modal-service.min":4,"./angular-spinner":5,"./angular-storage.min":6,"./angular-ui-router.min":7,"./ng-csv.min":9,"angular-animate":23,"angular-cookies":25,"angular-resource":27,"angular-sanitize":29,"spin":32}],9:[function(require,module,exports){
+},{"./angular-modal-service.min":4,"./angular-spinner":5,"./angular-storage.min":6,"./angular-ui-router.min":7,"./ng-csv.min":9,"angular-animate":27,"angular-cookies":29,"angular-resource":31,"angular-sanitize":33,"spin":36}],9:[function(require,module,exports){
 /*! ng-csv 10-10-2015 */
 !function(a){angular.module("ngCsv.config",[]).value("ngCsv.config",{debug:!0}).config(["$compileProvider",function(a){angular.isDefined(a.urlSanitizationWhitelist)?a.urlSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|data):/):a.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|data):/)}]),angular.module("ngCsv.directives",["ngCsv.services"]),angular.module("ngCsv.services",[]),angular.module("ngCsv",["ngCsv.config","ngCsv.services","ngCsv.directives","ngSanitize"]),"undefined"!=typeof module&&"undefined"!=typeof exports&&module.exports===exports&&(module.exports="ngCsv"),angular.module("ngCsv.services").service("CSV",["$q",function(a){var b="\r\n",c="﻿",d={"\\t":"	","\\b":"\b","\\v":"","\\f":"\f","\\r":"\r"};this.stringifyField=function(a,b){return"locale"===b.decimalSep&&this.isFloat(a)?a.toLocaleString():"."!==b.decimalSep&&this.isFloat(a)?a.toString().replace(".",b.decimalSep):"string"==typeof a?(a=a.replace(/"/g,'""'),(b.quoteStrings||a.indexOf(",")>-1||a.indexOf("\n")>-1||a.indexOf("\r")>-1)&&(a=b.txtDelim+a+b.txtDelim),a):"boolean"==typeof a?a?"TRUE":"FALSE":a},this.isFloat=function(a){return+a===a&&(!isFinite(a)||Boolean(a%1))},this.stringify=function(d,e){var f=a.defer(),g=this,h="",i="",j=a.when(d).then(function(a){if(angular.isDefined(e.header)&&e.header){var d,j;d=[],angular.forEach(e.header,function(a){this.push(g.stringifyField(a,e))},d),j=d.join(e.fieldSep?e.fieldSep:","),i+=j+b}var k=[];if(angular.isArray(a)?k=a:angular.isFunction(a)&&(k=a()),angular.isDefined(e.label)&&e.label&&"boolean"==typeof e.label){var l,m;l=[],angular.forEach(k[0],function(a,b){this.push(g.stringifyField(b,e))},l),m=l.join(e.fieldSep?e.fieldSep:","),i+=m+b}angular.forEach(k,function(a,c){var d,f,h=angular.copy(k[c]);f=[];var j=e.columnOrder?e.columnOrder:h;angular.forEach(j,function(a){var b=e.columnOrder?h[a]:a;this.push(g.stringifyField(b,e))},f),d=f.join(e.fieldSep?e.fieldSep:","),i+=c<k.length?d+b:d}),e.addByteOrderMarker&&(h+=c),h+=i,f.resolve(h)});return"function"==typeof j["catch"]&&j["catch"](function(a){f.reject(a)}),f.promise},this.isSpecialChar=function(a){return void 0!==d[a]},this.getSpecialChar=function(a){return d[a]}}]),angular.module("ngCsv.directives").directive("ngCsv",["$parse","$q","CSV","$document","$timeout",function(b,c,d,e,f){return{restrict:"AC",scope:{data:"&ngCsv",filename:"@filename",header:"&csvHeader",columnOrder:"&csvColumnOrder",txtDelim:"@textDelimiter",decimalSep:"@decimalSeparator",quoteStrings:"@quoteStrings",fieldSep:"@fieldSeparator",lazyLoad:"@lazyLoad",addByteOrderMarker:"@addBom",ngClick:"&",charset:"@charset",label:"&csvLabel"},controller:["$scope","$element","$attrs","$transclude",function(a,b,e){function f(){var b={txtDelim:a.txtDelim?a.txtDelim:'"',decimalSep:a.decimalSep?a.decimalSep:".",quoteStrings:a.quoteStrings,addByteOrderMarker:a.addByteOrderMarker};return angular.isDefined(e.csvHeader)&&(b.header=a.$eval(a.header)),angular.isDefined(e.csvColumnOrder)&&(b.columnOrder=a.$eval(a.columnOrder)),angular.isDefined(e.csvLabel)&&(b.label=a.$eval(a.label)),b.fieldSep=a.fieldSep?a.fieldSep:",",b.fieldSep=d.isSpecialChar(b.fieldSep)?d.getSpecialChar(b.fieldSep):b.fieldSep,b}a.csv="",angular.isDefined(a.lazyLoad)&&"true"==a.lazyLoad||angular.isArray(a.data)&&a.$watch("data",function(){a.buildCSV()},!0),a.getFilename=function(){return a.filename||"download.csv"},a.buildCSV=function(){var g=c.defer();return b.addClass(e.ngCsvLoadingClass||"ng-csv-loading"),d.stringify(a.data(),f()).then(function(c){a.csv=c,b.removeClass(e.ngCsvLoadingClass||"ng-csv-loading"),g.resolve(c)}),a.$apply(),g.promise}}],link:function(b,c){function d(){var c=b.charset||"utf-8",d=new Blob([b.csv],{type:"text/csv;charset="+c+";"});if(a.navigator.msSaveOrOpenBlob)navigator.msSaveBlob(d,b.getFilename());else{var g=angular.element('<div data-tap-disabled="true"><a></a></div>'),h=angular.element(g.children()[0]);h.attr("href",a.URL.createObjectURL(d)),h.attr("download",b.getFilename()),h.attr("target","_blank"),e.find("body").append(g),f(function(){h[0].click(),h.remove()},null)}}c.bind("click",function(){b.buildCSV().then(function(){d()}),b.$apply()})}}}])}(window,document);
 },{}],10:[function(require,module,exports){
@@ -333,6 +325,19 @@ require('./totalingService');
 require('./orders');
 },{"./orders":13,"./totalingService":14}],13:[function(require,module,exports){
 angular.module('orders', ['resources.orders', 'services.totaling'])
+    .config(['$stateProvider', function($stateProvider){
+        $stateProvider
+            .state('orders', {
+                url: "/orders",
+                templateUrl: "app/orders/orders-list.tpl.html",
+                controller: "OrdersCtrl as oc"
+            })
+            .state('totals', {
+                url: "/totals",
+                templateUrl: "app/orders/orders-totals-list.tpl.html",
+                controller: "TotalsCtrl as tc"
+            });
+    }])
     .controller('OrdersCtrl', 
         ['$scope', 'orders', 'usSpinnerService', 
             function ($scope, orders, usSpinnerService) {
@@ -370,8 +375,8 @@ angular.module('orders', ['resources.orders', 'services.totaling'])
             }])
 
     .controller('TotalsCtrl', 
-        ['$scope', 'orders', 'totaling', 'usSpinnerService',
-            function ($scope, orders, totaling, usSpinnerService) {
+        ['$scope', 'orders', 'totalingService', 'usSpinnerService',
+            function ($scope, orders, totalingService, usSpinnerService) {
                 var tc = this;
         
                 var init = function () {
@@ -379,7 +384,7 @@ angular.module('orders', ['resources.orders', 'services.totaling'])
         
                     orders.get({ orderStatus: 'awaiting_shipment', pageSize: 500 },
                         function(response){
-                            tc.totals = totaling.Process(response.orders);
+                            tc.totals = totalingService.Process(response.orders);
                             usSpinnerService.stop('spinner');
                         });
                 };
@@ -827,6 +832,130 @@ var serialize = function(obj) {
 
 module.exports = serialize;
 },{}],22:[function(require,module,exports){
+'use strict';
+
+require('./subscriptions');
+require('./subscriptionsService');
+require('./sub-selector');
+},{"./sub-selector":23,"./subscriptions":24,"./subscriptionsService":25}],23:[function(require,module,exports){
+(function(){
+    'use strict';
+
+    function SubSelectorController(){
+
+    }
+
+    function SubSelector(){
+        return {
+            restrict: 'E',
+            bindToController: true,
+            controllerAs: 'ss',
+            controller: SubSelectorController
+        }
+    }
+
+    function SubSelectee(){
+        function link(scope, element, attrs, ctrl){
+
+        }
+
+        return {
+            restrict: 'E',
+            require: '^ss',
+            link: link
+        }
+    }
+
+    angular.module('subscriptions')
+        .directive('subSelector', SubSelector)
+        .directive('subSelectee', SubSelectee)
+})();
+
+},{}],24:[function(require,module,exports){
+(function(){
+    'use strict';
+
+    function SubscriptionsTotalsController(totals){
+        var sc = this;
+
+        if (totals)
+            sc.totals = totals;
+    }
+
+    function SubscriptionsListController(totals, subscriptions){
+        var slc = this;
+
+/*        if (totals)
+            sc.totals = totals;*/
+
+        if (subscriptions)
+            slc.subscriptions = subscriptions;
+    }
+
+    angular.module('subscriptions', [])
+        .config(['$stateProvider', function($stateProvider){
+            $stateProvider
+                .state('subscriptions',{
+                    url: '/subscriptions',
+                    controller: SubscriptionsTotalsController,
+                    controllerAs: 'sc',
+                    templateUrl: 'app/subscriptions/subscriptions.tpl.html',
+                    resolve: {
+                        totals: ['SubscriptionsService', function(SubscriptionsService) {
+                            return SubscriptionsService.getTotals()
+                                .then(function(response){
+                                    return response;
+                                });
+                        }]
+                    }
+                })
+                .state('subscriptions.list',{
+                    url: '/:status',
+                    controller: SubscriptionsListController,
+                    controllerAs: 'slc',
+                    templateUrl: 'app/subscriptions/subscriptions-list.tpl.html',
+                    resolve: {
+                        subscriptions: ['SubscriptionsService', '$stateParams', function(SubscriptionsService, $stateParams){
+                            if ($stateParams.status)
+                                return SubscriptionsService.getByStatus($stateParams.status)
+                                    .then(function(response){
+                                       return response;
+                                    });
+
+                            return null;
+                        }]
+                    }
+                })
+        }]);
+})();
+},{}],25:[function(require,module,exports){
+(function(){
+    'use strict';
+
+    function SubscriptionsService($http){
+        return {
+            getTotals: function(){
+                return $http.get('app/resources/subscription-totals.json') //Dummy Data in JSON
+                    .then(function(response){
+                        return response.data;
+                    });
+
+            },
+            getByStatus: function(status){
+                return $http.get('app/resources/subscription-' + status + '.json') //Dummy Data in JSON
+                    .then(function(response){
+                        return response.data;
+                    });
+            }
+        }
+    }
+
+    angular.module('subscriptions')
+        .factory('SubscriptionsService', ['$http', SubscriptionsService]);
+})();
+
+
+},{}],26:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.9
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -4701,11 +4830,11 @@ angular.module('ngAnimate', [])
 
 })(window, window.angular);
 
-},{}],23:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 require('./angular-animate');
 module.exports = 'ngAnimate';
 
-},{"./angular-animate":22}],24:[function(require,module,exports){
+},{"./angular-animate":26}],28:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.9
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -5028,11 +5157,11 @@ angular.module('ngCookies').provider('$$cookieWriter', function $$CookieWriterPr
 
 })(window, window.angular);
 
-},{}],25:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 require('./angular-cookies');
 module.exports = 'ngCookies';
 
-},{"./angular-cookies":24}],26:[function(require,module,exports){
+},{"./angular-cookies":28}],30:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -5892,11 +6021,11 @@ angular.module('ngResource', ['ng']).
 
 })(window, window.angular);
 
-},{}],27:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 require('./angular-resource');
 module.exports = 'ngResource';
 
-},{"./angular-resource":26}],28:[function(require,module,exports){
+},{"./angular-resource":30}],32:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.9
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -6581,11 +6710,11 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
 
 })(window, window.angular);
 
-},{}],29:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 require('./angular-sanitize');
 module.exports = 'ngSanitize';
 
-},{"./angular-sanitize":28}],30:[function(require,module,exports){
+},{"./angular-sanitize":32}],34:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -38059,11 +38188,11 @@ $provide.value("$locale", {
 })(window);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],31:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":30}],32:[function(require,module,exports){
+},{"./angular":34}],36:[function(require,module,exports){
 //fgnass.github.com/spin.js#v1.2.5
 /**
  * Copyright (c) 2011 Felix Gnass [fgnass at neteye dot de]
