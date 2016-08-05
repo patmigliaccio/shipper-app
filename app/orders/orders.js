@@ -1,17 +1,4 @@
 angular.module('orders', ['resources.orders', 'services.totaling'])
-    .config(['$stateProvider', function($stateProvider){
-        $stateProvider
-            .state('orders', {
-                url: "/orders",
-                templateUrl: "app/orders/orders-list.tpl.html",
-                controller: "OrdersCtrl as oc"
-            })
-            .state('totals', {
-                url: "/totals",
-                templateUrl: "app/orders/orders-totals-list.tpl.html",
-                controller: "TotalsCtrl as tc"
-            });
-    }])
     .controller('OrdersCtrl', 
         ['$scope', 'orders', 'usSpinnerService', 
             function ($scope, orders, usSpinnerService) {
@@ -49,8 +36,8 @@ angular.module('orders', ['resources.orders', 'services.totaling'])
             }])
 
     .controller('TotalsCtrl', 
-        ['$scope', 'orders', 'totalingService', 'usSpinnerService',
-            function ($scope, orders, totalingService, usSpinnerService) {
+        ['$scope', 'orders', 'totaling', 'usSpinnerService',
+            function ($scope, orders, totaling, usSpinnerService) {
                 var tc = this;
         
                 var init = function () {
@@ -58,7 +45,7 @@ angular.module('orders', ['resources.orders', 'services.totaling'])
         
                     orders.get({ orderStatus: 'awaiting_shipment', pageSize: 500 },
                         function(response){
-                            tc.totals = totalingService.Process(response.orders);
+                            tc.totals = totaling.Process(response.orders);
                             usSpinnerService.stop('spinner');
                         });
                 };
