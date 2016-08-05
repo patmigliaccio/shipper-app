@@ -1,4 +1,6 @@
-angular.module('services.totaling', [])
+//TODO major refactoring & fix issue #2
+
+angular.module('totals')
     .constant('cfg', {
         productKey: { //product sku prefixes with corresponding items
             "XXXX":"Product #1"
@@ -20,7 +22,7 @@ angular.module('services.totaling', [])
         defaultProductUnits: "ounces",//sets a default unit value for new nested products added (default: ounces)
         displayWeightAs: "lbs" //converts totals to this unit of measurement (default: lbs)
     })
-    .factory('totalingService',
+    .factory('TotalingService',
         ['cfg',
             function (cfg) {
                 var totaling = {};
@@ -177,3 +179,8 @@ angular.module('services.totaling', [])
 
                 return totaling;
             }]);
+
+//TODO pull this extension method
+String.prototype.isNumeric = function() {
+    return !isNaN(parseFloat(this)) && isFinite(this);
+};

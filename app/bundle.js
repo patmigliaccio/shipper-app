@@ -16,7 +16,8 @@ angular.module('ShipperApp', [
     'services.authentication',
     'home',
     'login',
-    'orders'])
+    'orders',
+    'totals'])
     
     .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'storeProvider', '$httpProvider',
         function ($stateProvider, $urlRouterProvider, $locationProvider, storeProvider, $httpProvider) {
@@ -26,16 +27,6 @@ angular.module('ShipperApp', [
                 url: "/",
                 templateUrl: "app/home/home.tpl.html",
                 controller: "HomeCtrl as hc"
-            })
-            .state('orders', {
-                url: "/orders",
-                templateUrl: "app/orders/orders-list.tpl.html",
-                controller: "OrdersCtrl as oc"
-            })
-            .state('totals', {
-                url: "/totals",
-                templateUrl: "app/orders/orders-totals-list.tpl.html",
-                controller: "TotalsCtrl as tc"
             });
 
         $urlRouterProvider.otherwise("/");
@@ -76,8 +67,9 @@ require('./resources');
 require('./home');
 require('./login');
 require('./orders');
+require('./totals');
 
-},{"./home":3,"./libs":8,"./login":10,"./orders":12,"./resources":16,"./services":19,"angular":31}],2:[function(require,module,exports){
+},{"./home":3,"./libs":8,"./login":10,"./orders":13,"./resources":16,"./services":18,"./totals":22,"angular":33}],2:[function(require,module,exports){
 angular.module('home', [])
     
     .controller('HomeCtrl', ['$scope', function ($scope) {
@@ -236,7 +228,7 @@ require('./home');
 	}
 }(this));
 
-},{"angular":31,"spin":32}],6:[function(require,module,exports){
+},{"angular":33,"spin":34}],6:[function(require,module,exports){
 !function(){angular.module("angular-storage",["angular-storage.store"]),angular.module("angular-storage.cookieStorage",[]).service("cookieStorage",["$cookies",function(e){this.set=function(t,r){return e.put(t,r)},this.get=function(t){return e.get(t)},this.remove=function(t){return e.remove(t)}}]),angular.module("angular-storage.internalStore",["angular-storage.localStorage","angular-storage.sessionStorage"]).factory("InternalStore",["$log","$injector",function(e,t){function r(e,r,o,a){this.namespace=e||null,(angular.isUndefined(a)||null==a)&&(a=!0),this.useCache=a,this.delimiter=o||".",this.inMemoryCache={},this.storage=t.get(r||"localStorage")}return r.prototype.getNamespacedKey=function(e){return this.namespace?[this.namespace,e].join(this.delimiter):e},r.prototype.set=function(e,t){this.useCache&&(this.inMemoryCache[e]=t),this.storage.set(this.getNamespacedKey(e),JSON.stringify(t))},r.prototype.get=function(t){var r=null;if(this.useCache&&t in this.inMemoryCache)return this.inMemoryCache[t];var o=this.storage.get(this.getNamespacedKey(t));try{r="undefined"==typeof o||"undefined"===o?void 0:JSON.parse(o),this.useCache&&(this.inMemoryCache[t]=r)}catch(a){e.error("Error parsing saved value",a),this.remove(t)}return r},r.prototype.remove=function(e){this.useCache&&(this.inMemoryCache[e]=null),this.storage.remove(this.getNamespacedKey(e))},r}]),angular.module("angular-storage.localStorage",["angular-storage.cookieStorage"]).service("localStorage",["$window","$injector",function(e,t){var r;try{e.localStorage.setItem("testKey","test"),e.localStorage.removeItem("testKey"),r=!0}catch(o){r=!1}if(r)this.set=function(t,r){return e.localStorage.setItem(t,r)},this.get=function(t){return e.localStorage.getItem(t)},this.remove=function(t){return e.localStorage.removeItem(t)},this.clear=function(){e.localStorage.clear()};else{var a=t.get("cookieStorage");this.set=a.set,this.get=a.get,this.remove=a.remove}}]),angular.module("angular-storage.sessionStorage",["angular-storage.cookieStorage"]).service("sessionStorage",["$window","$injector",function(e,t){var r;try{e.sessionStorage.setItem("testKey","test"),e.sessionStorage.removeItem("testKey"),r=!0}catch(o){r=!1}if(r)this.set=function(t,r){return e.sessionStorage.setItem(t,r)},this.get=function(t){return e.sessionStorage.getItem(t)},this.remove=function(t){return e.sessionStorage.removeItem(t)};else{var a=t.get("cookieStorage");this.set=a.set,this.get=a.get,this.remove=a.remove}}]),angular.module("angular-storage.store",["angular-storage.internalStore"]).provider("store",function(){var e="localStorage",t=!0;this.setStore=function(t){t&&angular.isString(t)&&(e=t)},this.setCaching=function(e){t=!!e},this.$get=["InternalStore",function(r){var o=new r(null,e,null,t);return o.getNamespacedStore=function(e,t,o,a){return new r(e,t,o,a)},o}]})}();
 },{}],7:[function(require,module,exports){
 /**
@@ -260,7 +252,7 @@ require('./angular-modal-service.min');
 require('./ng-csv.min');
 require('spin');
 require('./angular-spinner');
-},{"./angular-modal-service.min":4,"./angular-spinner":5,"./angular-storage.min":6,"./angular-ui-router.min":7,"./ng-csv.min":9,"angular-animate":23,"angular-cookies":25,"angular-resource":27,"angular-sanitize":29,"spin":32}],9:[function(require,module,exports){
+},{"./angular-modal-service.min":4,"./angular-spinner":5,"./angular-storage.min":6,"./angular-ui-router.min":7,"./ng-csv.min":9,"angular-animate":25,"angular-cookies":27,"angular-resource":29,"angular-sanitize":31,"spin":34}],9:[function(require,module,exports){
 /*! ng-csv 10-10-2015 */
 !function(a){angular.module("ngCsv.config",[]).value("ngCsv.config",{debug:!0}).config(["$compileProvider",function(a){angular.isDefined(a.urlSanitizationWhitelist)?a.urlSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|data):/):a.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|data):/)}]),angular.module("ngCsv.directives",["ngCsv.services"]),angular.module("ngCsv.services",[]),angular.module("ngCsv",["ngCsv.config","ngCsv.services","ngCsv.directives","ngSanitize"]),"undefined"!=typeof module&&"undefined"!=typeof exports&&module.exports===exports&&(module.exports="ngCsv"),angular.module("ngCsv.services").service("CSV",["$q",function(a){var b="\r\n",c="﻿",d={"\\t":"	","\\b":"\b","\\v":"","\\f":"\f","\\r":"\r"};this.stringifyField=function(a,b){return"locale"===b.decimalSep&&this.isFloat(a)?a.toLocaleString():"."!==b.decimalSep&&this.isFloat(a)?a.toString().replace(".",b.decimalSep):"string"==typeof a?(a=a.replace(/"/g,'""'),(b.quoteStrings||a.indexOf(",")>-1||a.indexOf("\n")>-1||a.indexOf("\r")>-1)&&(a=b.txtDelim+a+b.txtDelim),a):"boolean"==typeof a?a?"TRUE":"FALSE":a},this.isFloat=function(a){return+a===a&&(!isFinite(a)||Boolean(a%1))},this.stringify=function(d,e){var f=a.defer(),g=this,h="",i="",j=a.when(d).then(function(a){if(angular.isDefined(e.header)&&e.header){var d,j;d=[],angular.forEach(e.header,function(a){this.push(g.stringifyField(a,e))},d),j=d.join(e.fieldSep?e.fieldSep:","),i+=j+b}var k=[];if(angular.isArray(a)?k=a:angular.isFunction(a)&&(k=a()),angular.isDefined(e.label)&&e.label&&"boolean"==typeof e.label){var l,m;l=[],angular.forEach(k[0],function(a,b){this.push(g.stringifyField(b,e))},l),m=l.join(e.fieldSep?e.fieldSep:","),i+=m+b}angular.forEach(k,function(a,c){var d,f,h=angular.copy(k[c]);f=[];var j=e.columnOrder?e.columnOrder:h;angular.forEach(j,function(a){var b=e.columnOrder?h[a]:a;this.push(g.stringifyField(b,e))},f),d=f.join(e.fieldSep?e.fieldSep:","),i+=c<k.length?d+b:d}),e.addByteOrderMarker&&(h+=c),h+=i,f.resolve(h)});return"function"==typeof j["catch"]&&j["catch"](function(a){f.reject(a)}),f.promise},this.isSpecialChar=function(a){return void 0!==d[a]},this.getSpecialChar=function(a){return d[a]}}]),angular.module("ngCsv.directives").directive("ngCsv",["$parse","$q","CSV","$document","$timeout",function(b,c,d,e,f){return{restrict:"AC",scope:{data:"&ngCsv",filename:"@filename",header:"&csvHeader",columnOrder:"&csvColumnOrder",txtDelim:"@textDelimiter",decimalSep:"@decimalSeparator",quoteStrings:"@quoteStrings",fieldSep:"@fieldSeparator",lazyLoad:"@lazyLoad",addByteOrderMarker:"@addBom",ngClick:"&",charset:"@charset",label:"&csvLabel"},controller:["$scope","$element","$attrs","$transclude",function(a,b,e){function f(){var b={txtDelim:a.txtDelim?a.txtDelim:'"',decimalSep:a.decimalSep?a.decimalSep:".",quoteStrings:a.quoteStrings,addByteOrderMarker:a.addByteOrderMarker};return angular.isDefined(e.csvHeader)&&(b.header=a.$eval(a.header)),angular.isDefined(e.csvColumnOrder)&&(b.columnOrder=a.$eval(a.columnOrder)),angular.isDefined(e.csvLabel)&&(b.label=a.$eval(a.label)),b.fieldSep=a.fieldSep?a.fieldSep:",",b.fieldSep=d.isSpecialChar(b.fieldSep)?d.getSpecialChar(b.fieldSep):b.fieldSep,b}a.csv="",angular.isDefined(a.lazyLoad)&&"true"==a.lazyLoad||angular.isArray(a.data)&&a.$watch("data",function(){a.buildCSV()},!0),a.getFilename=function(){return a.filename||"download.csv"},a.buildCSV=function(){var g=c.defer();return b.addClass(e.ngCsvLoadingClass||"ng-csv-loading"),d.stringify(a.data(),f()).then(function(c){a.csv=c,b.removeClass(e.ngCsvLoadingClass||"ng-csv-loading"),g.resolve(c)}),a.$apply(),g.promise}}],link:function(b,c){function d(){var c=b.charset||"utf-8",d=new Blob([b.csv],{type:"text/csv;charset="+c+";"});if(a.navigator.msSaveOrOpenBlob)navigator.msSaveBlob(d,b.getFilename());else{var g=angular.element('<div data-tap-disabled="true"><a></a></div>'),h=angular.element(g.children()[0]);h.attr("href",a.URL.createObjectURL(d)),h.attr("download",b.getFilename()),h.attr("target","_blank"),e.find("body").append(g),f(function(){h[0].click(),h.remove()},null)}}c.bind("click",function(){b.buildCSV().then(function(){d()}),b.$apply()})}}}])}(window,document);
 },{}],10:[function(require,module,exports){
@@ -327,74 +319,390 @@ angular.module('login', ['services.authentication', 'angularModalService'])
 
             }]);
 },{}],12:[function(require,module,exports){
+(function(){
+    'use strict';
+
+    OrdersService.$inject = ['$resource'];
+    function OrdersService($resource){
+        var root = 'orders';
+
+        return $resource(root, {},
+            {
+                get: {
+                    url: 'safe/orders-08-03-2016.json', //root + '/:id',
+                    method: 'GET',
+                    params: {
+                        id: '@id'
+                    }
+                }
+            });
+
+    }
+
+    StatusService.$inject = ['$http'];
+    function StatusService($http){
+        var promise;
+
+        return {
+            getStatuses: function(){
+                if (!promise)
+                    promise = $http.get('app/orders/order-statuses.json')
+                                    .then(function(response){
+                                        return response.data;
+                                    });
+
+                return promise;
+            }
+        }
+    }
+
+    StatusFactory.$inject = ['StatusService'];
+    function StatusFactory(StatusService){
+        var _defaultValue = 3;
+
+        var statuses;
+
+        var search = function(property, value) {
+            if (value)
+                for (var i = 0, len = statuses.length; i < len; i++) {
+                    if (statuses[i][property] == value)
+                        return statuses[i];
+                }
+
+            return null;
+        }
+
+        return {
+            getAll: function(){
+                return StatusService.getStatuses().then(function(response){
+                        return statuses = response;
+                    });
+            },
+            getByCode: function(code){
+                return search('code', code) || this.getDefault();
+            },
+            getByValue: function(value){
+                return search('value', value) || this.getDefault();
+            },
+            getDefault: function(){
+                return this.getByValue(_defaultValue);
+            }
+        }
+    }
+
+    angular.module('orders')
+        .factory('OrdersService', OrdersService)
+        .factory('StatusService', StatusService)
+        .factory('StatusFactory', StatusFactory)
+})();
+},{}],13:[function(require,module,exports){
 'use strict';
 
-require('./totalingService');
 require('./orders');
-},{"./orders":13,"./totalingService":14}],13:[function(require,module,exports){
-angular.module('orders', ['resources.orders', 'services.totaling'])
-    .controller('OrdersCtrl', 
-        ['$scope', 'orders', 'usSpinnerService', 
-            function ($scope, orders, usSpinnerService) {
-                var oc = this;
-                
-                var init = function(){
-                    orders.getStatuses().$promise
+require('./OrdersService');
+},{"./OrdersService":12,"./orders":14}],14:[function(require,module,exports){
+(function(){
+    'use strict';
+
+    OrdersConfig.$inject = ['$stateProvider'];
+    function OrdersConfig($stateProvider){
+        $stateProvider
+            .state('orders', {
+                url: "/orders",
+                params: {
+                    status: null
+                },
+                templateUrl: "app/orders/orders-list.tpl.html",
+                controller: "OrdersCtrl as oc",
+                resolve: OrdersCtrl.resolve
+            });
+    }
+
+    OrdersCtrl.$inject = ['status', 'OrdersService', 'StatusFactory', 'usSpinnerService'];
+    function OrdersCtrl(status, OrdersService, StatusFactory, usSpinnerService){
+        var oc = this;
+        oc.status = status;
+
+        var init = function(){
+            StatusFactory.getAll().
+            then(function(response){
+                oc.statuses = response;
+            });
+
+            oc.getOrders(oc.status);
+        }
+
+        oc.getOrders = function(status){
+            usSpinnerService.spin('spinner');
+
+            OrdersService.get({ orderStatus: status.code },
+                function (response) {
+                    oc.orders = $.map(response.orders, function (value) {
+                        return [value];
+                    });
+
+                    usSpinnerService.stop('spinner');
+                });
+        };
+
+        oc.statusChange = function(){
+            oc.getOrders(oc.status);
+        };
+
+        init();
+
+        //TODO add export function that simplifies oc.orders array
+    }
+
+    OrdersCtrl.resolve = {
+        status: ['$stateParams', 'StatusFactory', function($stateParams, StatusFactory){
+            return StatusFactory.getAll()
+                        .then(function(){
+                            return StatusFactory.getByValue($stateParams.status); //if falsy returns default status
+                        });
+        }]
+    }
+
+    angular.module('orders', [])
+        .config(OrdersConfig)
+        .controller('OrdersCtrl', OrdersCtrl);
+
+})();
+
+
+
+},{}],15:[function(require,module,exports){
+angular.module('resources.accounts', [])
+
+    .factory('accounts',
+        ['$resource', function($resource) {
+            var root = 'accounts';
+
+            return $resource(root, {},
+                {
+                    getTags: {
+                        url: root + '/listtags',
+                        method: 'GET',
+                        isArray: true
+                    }
+                });
+
+    }]);
+},{}],16:[function(require,module,exports){
+'use strict';
+
+require('./accounts');
+},{"./accounts":15}],17:[function(require,module,exports){
+angular.module('services.authentication', ['angular-storage'])
+    
+    .factory('authentication',
+        ['Base64', '$http', '$log', '$rootScope', 'store',
+            function (Base64, $http, $log, $rootScope, store) {
+                return {
+                    
+                    Login: function (username, password, callback) {
+                        var auth = 'Basic ' + Base64.encode(username + ':' + password);
+
+                        $http({
+                            url: 'safe/SSApiKeys.json',
+                            method: "GET",
+                            headers: {
+                                'Authorization': auth
+                            }
+                        })
                         .then(function(response){
-                            oc.statuses = response;
-                            oc.status = oc.statuses[2]; //default status: Awaiting Shipment
-                            oc.getOrders(oc.status);
-                        });
-                };
-        
-                oc.getOrders = function(status){
-                    usSpinnerService.spin('spinner');
-        
-                    orders.get({ orderStatus: status.value },
-                        function (response) {
-                            oc.orders = $.map(response.orders, function (value) {
-                                return [value];
+                                response.success = true;
+                                callback(response);
+                            }, function(error){
+                                error.message = 'Username or password is incorrect.';
+                                $log.error(error);
+                                callback(error);
                             });
-        
-                            usSpinnerService.stop('spinner');
-                        });
+                        
+                    },
+                    
+                    SetCredentials: function (username, apiKey, apiSecret) {
+                        var authData = Base64.encode(apiKey + ':' + apiSecret);
+
+                        $rootScope.globals = {
+                            authData: authData
+                        };
+
+                        store.set('globals', $rootScope.globals);
+                        
+                        this.SetAuthorization(authData);
+                    },
+                    
+                    ClearCredentials: function () {
+                        $rootScope.globals = {};
+                        store.remove('globals');
+                        
+                        $http.defaults.headers.common.Authorization = 'Basic ';
+                    },
+                    
+                    SetAuthorization: function (authData) {
+                        $http.defaults.headers.common['Authorization'] = 'Basic ' + authData;
+                    }                
                 };
-        
-                oc.statusChange = function(){
-                    oc.getOrders(oc.status);
-                };
-        
-                init();
-        
-                //TODO add export function that simplifies oc.orders array
+                
             }])
+    
+    
+    .factory('Base64', function () {
 
-    .controller('TotalsCtrl', 
-        ['$scope', 'orders', 'totaling', 'usSpinnerService',
-            function ($scope, orders, totaling, usSpinnerService) {
-                var tc = this;
+        var keyStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+
+        return {
+            encode: function (input) {
+                var output = "";
+                var chr1, chr2, chr3 = "";
+                var enc1, enc2, enc3, enc4 = "";
+                var i = 0;
+
+                do {
+                    chr1 = input.charCodeAt(i++);
+                    chr2 = input.charCodeAt(i++);
+                    chr3 = input.charCodeAt(i++);
+
+                    enc1 = chr1 >> 2;
+                    enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+                    enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+                    enc4 = chr3 & 63;
+
+                    if (isNaN(chr2)) {
+                        enc3 = enc4 = 64;
+                    } else if (isNaN(chr3)) {
+                        enc4 = 64;
+                    }
+
+                    output = output +
+                        keyStr.charAt(enc1) +
+                        keyStr.charAt(enc2) +
+                        keyStr.charAt(enc3) +
+                        keyStr.charAt(enc4);
+                    chr1 = chr2 = chr3 = "";
+                    enc1 = enc2 = enc3 = enc4 = "";
+                } while (i < input.length);
+
+                return output;
+            },
+
+            decode: function (input) {
+                var output = "";
+                var chr1, chr2, chr3 = "";
+                var enc1, enc2, enc3, enc4 = "";
+                var i = 0;
+
+                // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
+                var base64test = /[^A-Za-z0-9\+\/\=]/g;
+                if (base64test.exec(input)) {
+                    window.alert("There were invalid base64 characters in the input text.\n" +
+                        "Valid base64 characters are A-Z, a-z, 0-9, '+', '/',and '='\n" +
+                        "Expect errors in decoding.");
+                }
+                input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+
+                do {
+                    enc1 = keyStr.indexOf(input.charAt(i++));
+                    enc2 = keyStr.indexOf(input.charAt(i++));
+                    enc3 = keyStr.indexOf(input.charAt(i++));
+                    enc4 = keyStr.indexOf(input.charAt(i++));
+
+                    chr1 = (enc1 << 2) | (enc2 >> 4);
+                    chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+                    chr3 = ((enc3 & 3) << 6) | enc4;
+
+                    output = output + String.fromCharCode(chr1);
+
+                    if (enc3 != 64) {
+                        output = output + String.fromCharCode(chr2);
+                    }
+                    if (enc4 != 64) {
+                        output = output + String.fromCharCode(chr3);
+                    }
+
+                    chr1 = chr2 = chr3 = "";
+                    enc1 = enc2 = enc3 = enc4 = "";
+
+                } while (i < input.length);
+
+                return output;
+            }
+        };
+
+    });
+},{}],18:[function(require,module,exports){
+'use strict';
+
+require('./authentication');
+require('./interceptor');
+},{"./authentication":17,"./interceptor":19}],19:[function(require,module,exports){
+var serialize = require('./serialize');
+
+angular.module('services.interceptor', [])
+    
+    .factory('interceptor', ['$q', '$rootScope', function($q, $rootScope){
         
-                var init = function () {
-                    usSpinnerService.spin('spinner');
-        
-                    orders.get({ orderStatus: 'awaiting_shipment', pageSize: 500 },
-                        function(response){
-                            tc.totals = totaling.Process(response.orders);
-                            usSpinnerService.stop('spinner');
-                        });
-                };
-        
-                init();
+        var handlerError = function(rejection){
+            //redirects to login if unauthorized
+            if (rejection.status === 401){
+                $rootScope.$broadcast('unauthorized');
+            }
 
-            }]);
+            return $q.reject(rejection);
+        };
 
+        return {
+            //uses proxy for http requests
+            request: function (config) {
+                if (!config.url.match(/(.html|.php|.json)/)){  //ignores certain requests
 
-String.prototype.isNumeric = function() {
-    return !isNaN(parseFloat(this)) && isFinite(this);
+                    //serializes parameters for proxy
+                    var queryString = '';
+                    if (typeof config.params !== "undefined"){
+                        queryString = '?' + serialize(config.params);
+                        delete config.params;
+                    }
+
+                    config.url = 'proxy.php?url=https://ssapi.shipstation.com/' + config.url + queryString + '&mode=native';
+                }
+
+                return config || $q.when(config);
+            },
+            response: function (response) {
+
+                //handles  unauthorized proxy requests
+                if (response.data == "401 Unauthorized"){
+                    response.status = 401;
+                    response.statusText = "Unauthorized";
+                    return handlerError(response);
+                }
+
+                return response || $q.when(response);
+            },
+            responseError: handlerError
+        };
+
+    }]);
+
+},{"./serialize":20}],20:[function(require,module,exports){
+'use strict';
+
+//serialize JSON into queryString
+var serialize = function(obj) {
+    var str = [];
+    for(var p in obj)
+        if (obj.hasOwnProperty(p)) {
+            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+        }
+    return str.join("&");
 };
 
-},{}],14:[function(require,module,exports){
-angular.module('services.totaling', [])
+module.exports = serialize;
+},{}],21:[function(require,module,exports){
+//TODO major refactoring & fix issue #2
+
+angular.module('totals')
     .constant('cfg', {
         productKey: { //product sku prefixes with corresponding items
             "XXXX":"Product #1"
@@ -416,7 +724,7 @@ angular.module('services.totaling', [])
         defaultProductUnits: "ounces",//sets a default unit value for new nested products added (default: ounces)
         displayWeightAs: "lbs" //converts totals to this unit of measurement (default: lbs)
     })
-    .factory('totalingService',
+    .factory('TotalingService',
         ['cfg',
             function (cfg) {
                 var totaling = {};
@@ -573,260 +881,52 @@ angular.module('services.totaling', [])
 
                 return totaling;
             }]);
-},{}],15:[function(require,module,exports){
-angular.module('resources.accounts', [])
 
-    .factory('accounts',
-        ['$resource', function($resource) {
-            var root = 'accounts';
-
-            return $resource(root, {},
-                {
-                    getTags: {
-                        url: root + '/listtags',
-                        method: 'GET',
-                        isArray: true
-                    }
-                });
-
-    }]);
-},{}],16:[function(require,module,exports){
-'use strict';
-
-require('./accounts');
-require('./orders');
-},{"./accounts":15,"./orders":17}],17:[function(require,module,exports){
-angular.module('resources.orders', [])
-
-    .factory('orders',
-        ['$resource', function($resource) {
-            var root = 'orders';
-
-            return $resource(root, {},
-                {
-                    get: {
-                        url: root + '/:id',
-                        method: 'GET',
-                        params: {
-                            id: '@id'
-                        }
-                    },
-                    getStatuses: {
-                        url: 'app/resources/order-statuses.json',
-                        method: 'GET',
-                        isArray: true
-                    }
-                });
-
-    }]);
-},{}],18:[function(require,module,exports){
-angular.module('services.authentication', ['angular-storage'])
-    
-    .factory('authentication',
-        ['Base64', '$http', '$log', '$rootScope', 'store',
-            function (Base64, $http, $log, $rootScope, store) {
-                return {
-                    
-                    Login: function (username, password, callback) {
-                        var auth = 'Basic ' + Base64.encode(username + ':' + password);
-
-                        $http({
-                            url: 'safe/SSApiKeys.json',
-                            method: "GET",
-                            headers: {
-                                'Authorization': auth
-                            }
-                        })
-                        .then(function(response){
-                                response.success = true;
-                                callback(response);
-                            }, function(error){
-                                error.message = 'Username or password is incorrect.';
-                                $log.error(error);
-                                callback(error);
-                            });
-                        
-                    },
-                    
-                    SetCredentials: function (username, apiKey, apiSecret) {
-                        var authData = Base64.encode(apiKey + ':' + apiSecret);
-
-                        $rootScope.globals = {
-                            authData: authData
-                        };
-
-                        store.set('globals', $rootScope.globals);
-                        
-                        this.SetAuthorization(authData);
-                    },
-                    
-                    ClearCredentials: function () {
-                        $rootScope.globals = {};
-                        store.remove('globals');
-                        
-                        $http.defaults.headers.common.Authorization = 'Basic ';
-                    },
-                    
-                    SetAuthorization: function (authData) {
-                        $http.defaults.headers.common['Authorization'] = 'Basic ' + authData;
-                    }                
-                };
-                
-            }])
-    
-    
-    .factory('Base64', function () {
-
-        var keyStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-
-        return {
-            encode: function (input) {
-                var output = "";
-                var chr1, chr2, chr3 = "";
-                var enc1, enc2, enc3, enc4 = "";
-                var i = 0;
-
-                do {
-                    chr1 = input.charCodeAt(i++);
-                    chr2 = input.charCodeAt(i++);
-                    chr3 = input.charCodeAt(i++);
-
-                    enc1 = chr1 >> 2;
-                    enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
-                    enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
-                    enc4 = chr3 & 63;
-
-                    if (isNaN(chr2)) {
-                        enc3 = enc4 = 64;
-                    } else if (isNaN(chr3)) {
-                        enc4 = 64;
-                    }
-
-                    output = output +
-                        keyStr.charAt(enc1) +
-                        keyStr.charAt(enc2) +
-                        keyStr.charAt(enc3) +
-                        keyStr.charAt(enc4);
-                    chr1 = chr2 = chr3 = "";
-                    enc1 = enc2 = enc3 = enc4 = "";
-                } while (i < input.length);
-
-                return output;
-            },
-
-            decode: function (input) {
-                var output = "";
-                var chr1, chr2, chr3 = "";
-                var enc1, enc2, enc3, enc4 = "";
-                var i = 0;
-
-                // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
-                var base64test = /[^A-Za-z0-9\+\/\=]/g;
-                if (base64test.exec(input)) {
-                    window.alert("There were invalid base64 characters in the input text.\n" +
-                        "Valid base64 characters are A-Z, a-z, 0-9, '+', '/',and '='\n" +
-                        "Expect errors in decoding.");
-                }
-                input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
-
-                do {
-                    enc1 = keyStr.indexOf(input.charAt(i++));
-                    enc2 = keyStr.indexOf(input.charAt(i++));
-                    enc3 = keyStr.indexOf(input.charAt(i++));
-                    enc4 = keyStr.indexOf(input.charAt(i++));
-
-                    chr1 = (enc1 << 2) | (enc2 >> 4);
-                    chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
-                    chr3 = ((enc3 & 3) << 6) | enc4;
-
-                    output = output + String.fromCharCode(chr1);
-
-                    if (enc3 != 64) {
-                        output = output + String.fromCharCode(chr2);
-                    }
-                    if (enc4 != 64) {
-                        output = output + String.fromCharCode(chr3);
-                    }
-
-                    chr1 = chr2 = chr3 = "";
-                    enc1 = enc2 = enc3 = enc4 = "";
-
-                } while (i < input.length);
-
-                return output;
-            }
-        };
-
-    });
-},{}],19:[function(require,module,exports){
-'use strict';
-
-require('./authentication');
-require('./interceptor');
-},{"./authentication":18,"./interceptor":20}],20:[function(require,module,exports){
-var serialize = require('./serialize');
-
-angular.module('services.interceptor', [])
-    
-    .factory('interceptor', ['$q', '$rootScope', function($q, $rootScope){
-        
-        var handlerError = function(rejection){
-            //redirects to login if unauthorized
-            if (rejection.status === 401){
-                $rootScope.$broadcast('unauthorized');
-            }
-
-            return $q.reject(rejection);
-        };
-
-        return {
-            //uses proxy for http requests
-            request: function (config) {
-                if (!config.url.match(/(.html|.php|.json)/)){  //ignores certain requests
-
-                    //serializes parameters for proxy
-                    var queryString = '';
-                    if (typeof config.params !== "undefined"){
-                        queryString = '?' + serialize(config.params);
-                        delete config.params;
-                    }
-
-                    config.url = 'proxy.php?url=https://ssapi.shipstation.com/' + config.url + queryString + '&mode=native';
-                }
-
-                return config || $q.when(config);
-            },
-            response: function (response) {
-
-                //handles  unauthorized proxy requests
-                if (response.data == "401 Unauthorized"){
-                    response.status = 401;
-                    response.statusText = "Unauthorized";
-                    return handlerError(response);
-                }
-
-                return response || $q.when(response);
-            },
-            responseError: handlerError
-        };
-
-    }]);
-
-},{"./serialize":21}],21:[function(require,module,exports){
-'use strict';
-
-//serialize JSON into queryString
-var serialize = function(obj) {
-    var str = [];
-    for(var p in obj)
-        if (obj.hasOwnProperty(p)) {
-            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-        }
-    return str.join("&");
+//TODO pull this extension method
+String.prototype.isNumeric = function() {
+    return !isNaN(parseFloat(this)) && isFinite(this);
 };
-
-module.exports = serialize;
 },{}],22:[function(require,module,exports){
+'use strict';
+
+require('./totals');
+require('./TotalingService');
+},{"./TotalingService":21,"./totals":23}],23:[function(require,module,exports){
+(function(){
+    'use strict';
+
+    TotalsConfig.$inject = ['$stateProvider'];
+    function TotalsConfig($stateProvider){
+        $stateProvider
+            .state('totals', {
+                url: "/totals",
+                templateUrl: "app/totals/totals-list.tpl.html",
+                controller: "TotalsCtrl as tc"
+            });
+    }
+
+    TotalsCtrl.$inject = ['OrdersService', 'TotalingService', 'StatusFactory', 'usSpinnerService'];
+    function TotalsCtrl(OrdersService, TotalingService, StatusFactory, usSpinnerService){
+        var tc = this;
+
+        usSpinnerService.spin('spinner');
+
+        var status = StatusFactory.getDefault();
+
+        OrdersService.get({ orderStatus: status.code, pageSize: 500 },
+            function(response){
+                tc.totals = TotalingService.Process(response.orders);
+                usSpinnerService.stop('spinner');
+            });
+    }
+
+    angular.module('totals', [])
+        .config(TotalsConfig)
+        .controller('TotalsCtrl', TotalsCtrl);
+
+})();
+
+},{}],24:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.9
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -4701,11 +4801,11 @@ angular.module('ngAnimate', [])
 
 })(window, window.angular);
 
-},{}],23:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 require('./angular-animate');
 module.exports = 'ngAnimate';
 
-},{"./angular-animate":22}],24:[function(require,module,exports){
+},{"./angular-animate":24}],26:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.9
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -5028,11 +5128,11 @@ angular.module('ngCookies').provider('$$cookieWriter', function $$CookieWriterPr
 
 })(window, window.angular);
 
-},{}],25:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 require('./angular-cookies');
 module.exports = 'ngCookies';
 
-},{"./angular-cookies":24}],26:[function(require,module,exports){
+},{"./angular-cookies":26}],28:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -5892,11 +5992,11 @@ angular.module('ngResource', ['ng']).
 
 })(window, window.angular);
 
-},{}],27:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 require('./angular-resource');
 module.exports = 'ngResource';
 
-},{"./angular-resource":26}],28:[function(require,module,exports){
+},{"./angular-resource":28}],30:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.9
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -6581,11 +6681,11 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
 
 })(window, window.angular);
 
-},{}],29:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 require('./angular-sanitize');
 module.exports = 'ngSanitize';
 
-},{"./angular-sanitize":28}],30:[function(require,module,exports){
+},{"./angular-sanitize":30}],32:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -38059,11 +38159,11 @@ $provide.value("$locale", {
 })(window);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],31:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":30}],32:[function(require,module,exports){
+},{"./angular":32}],34:[function(require,module,exports){
 //fgnass.github.com/spin.js#v1.2.5
 /**
  * Copyright (c) 2011 Felix Gnass [fgnass at neteye dot de]
