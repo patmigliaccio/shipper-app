@@ -1,186 +1,199 @@
-//TODO major refactoring & fix issue #2
+//TODO refactoring & fix issue #2
+(function (){
+    'use strict';
 
-angular.module('totals')
-    .constant('cfg', {
-        productKey: { //product sku prefixes with corresponding items
-            "XXXX":"Product #1"
-        },
+    var cfg = require('./totals-config');
 
-        //SETTINGS
-        nestedItemSKUPrefix: "", //checks for nested options if sku begins with (default: "")
-        specialCase: "", //adds item if option matches this (default: no match)
-        removeParent: true, //removes parent item from list if nested item found (default: true)
+    function TotalingService(){
+        var totals = {};
 
-        ignoredItemsSKUPrefix: "", //ignores item is sku begins with (default: "")
+        return {
+            GetTotals: function () {
+                return totals;
+            },
 
-        specialItemSKUPrefix: "", //if item sku prefix is this (default: "")
-        specialItemNewSKUPrefix: "", //replace it with this (default: "")
-        specialItemWeightUnits: "lbs", // and if is in units of this (default: lbs)
-        specialItemNewWeight: "", //give it a weight of this (default: 1)
+            //totals item weight values that have the same sku
+            Process: function (allOrders) {
 
-        defaultProductWeight: "1", //sets a default weight for new nested products added (default: 1)
-        defaultProductUnits: "ounces",//sets a default unit value for new nested products added (default: ounces)
-        displayWeightAs: "lbs" //converts totals to this unit of measurement (default: lbs)
-    })
-    .factory('TotalingService',
-        ['cfg',
-            function (cfg) {
-                var totaling = {};
+                for (var order in allOrders) {
 
-                //totals item weight values that have the same sku
-                totaling.Process = function (orders) {
-                    var totals = {};
-
-                    var itemKey = cfg.productKey || []; //product sku prefixes with corresponding items
-
-                    var ignoredItemsSKUPrefix = cfg.ignoredItemsSKUPrefix || ''; //ignores item is sku begins with
-
-                    var nestedItemSKUPrefix = cfg.nestedItemSKUPrefix || ''; //checks for nested options if sku begins with
-                    var specialCase = cfg.specialCase || 'a^'; //adds item if option matches this
-                    var removeParent = cfg.removeParent; //removes parent item from list if nested item found
-
-                    var specialItemSKUPrefix = cfg.specialItemSKUPrefix || ""; //if item sku prefix is this
-                    var specialItemNewSKUPrefix = cfg.specialItemNewSKUPrefix || ""; //replace it with this
-                    var specialItemWeightUnits = cfg.specialItemWeightUnits || "lbs"; // and if is in units of this
-                    var specialItemNewWeight = cfg.specialItemNewWeight || "1"; //give it a weight of this
-
-                    var productWeight = cfg.defaultProductWeight || '1'; //sets a default weight for new nested products added
-                    var productUnits = cfg.defaultProductUnits || 'lbs'; //sets a default unit value for new nested products added
-                    var weightFilter = cfg.displayWeightAs || 'lbs'; //converts totals to this unit of measurement
-
-                    for (var x in orders) {
-
-                        var items = [];
-                        var itemLength = 0;
-                        if (orders.hasOwnProperty(x)) {
-                            items = orders[x].items;
-                            itemLength = items.length;
-                        }
-
-                        for (var i = 0; i < itemLength; i++) {
-                            var nestedItem = false;
-
-                            //add items to array if there is more than one ordered in quantity
-                            //will cause issues at scale for large orders of the same product
-                            if (items[i].hasOwnProperty('quantity')) {
-                                if (items[i].quantity > 1) {
-                                    items[i].quantity--;
-                                    items.push(items[i]);
-                                    itemLength++;
-                                }
-                            }
-
-                            var sku = items[i].sku;
-                            //split sku by categorized delimiter
-                            var product = sku.split('-');
-
-                            //loop through options attributes of products for nested products
-                            if (product[0] == nestedItemSKUPrefix) {
-                                for (var o in items[i].options) {
-
-                                    var itemOption;
-                                    if (items[i].options.hasOwnProperty(o)) {
-                                        itemOption = items[i].options[o];
-                                    }
-
-                                    var regex = new RegExp(specialCase, 'gi'); //case insensitive
-                                    if (itemOption && itemOption.name.match(regex)) {
-
-                                        var itemCode = Object.keys(itemKey).filter(function (key) {
-                                            return itemKey[key] === itemOption.value
-                                        })[0];
-
-                                        items.push({
-                                            name: itemOption.value,
-                                            sku: itemCode,
-                                            weight: {
-                                                value: productWeight,
-                                                units: productUnits
-                                            },
-                                            options: []
-                                        });
-
-                                        itemLength++;
-
-                                        nestedItem = removeParent;
-                                    }
-                                }
-                                //skip if ignored item sku or nested item
-                            } else if (product[0] != ignoredItemsSKUPrefix && !nestedItem) {
-
-                                //set weight from attribute if it exists
-                                for (var opt in items[i].options) {
-                                    if (items[i].options[opt].name.toLowerCase() == "weight") {
-                                        var w = items[i].options[opt].value.split(' ');
-                                        items[i].weight.value = w[0];
-                                        items[i].weight.units = w[1];
-                                    }
-                                }
-
-                                //special item value/units change
-                                if (product[0] == specialItemSKUPrefix) {
-                                    product[0] = specialItemNewSKUPrefix;
-
-                                    if (items[i].weight.units == specialItemWeightUnits) items[i].weight.value = specialItemNewWeight;
-                                }
-
-                                //if sku not already in final array add it
-                                if (!totals[product[0]]) {
-                                    var itemName = itemKey[product[0]] || product[0];
-
-                                    totals[product[0]] = {
-                                        item_name: itemName,
-                                        //item_sku: product[0],
-                                        ounce_count: 0,
-                                        pound_count: 0,
-                                        sub_count: 0,
-                                        total_weight: 0,
-                                        item_weight_units: weightFilter
-                                    };
-                                }
-
-                                //sum different product types by second half of sku naming convention
-                                if (product[1]) {
-                                    //first char is number vs. letter (e.g. XXXX-0000 vs. XXXX-A000)
-                                    var firstChar = product[1].charAt(0);
-                                    if (firstChar.isNumeric()) {
-                                        items[i].weight.units == "ounces" || items[i].weight.units == "oz" ? totals[product[0]].ounce_count++ : totals[product[0]].pound_count++;
-                                    } else {
-                                        totals[product[0]].sub_count++;
-                                    }
-                                } else { //no second half exists
-                                    totals[product[0]].ounce_count++
-                                }
-
-                                //convert ounces to pounds if filter is set to lbs
-                                if ((items[i].weight.units == "ounces" || items[i].weight.units == "oz") && weightFilter == "lbs") {
-                                    items[i].weight.value = Number(items[i].weight.value) / 16;
-                                }
-
-                                //adds weight to total
-                                totals[product[0]].total_weight += Number(items[i].weight.value);
-                            }
-                        }
-
+                    if (!allOrders.hasOwnProperty(order)) {
+                        return;
                     }
 
-                    //sort array based on product key order
-                    var outTotals = [];
-                    for (var item in itemKey) {
-                        for (var obj in totals) {
-                            if (obj.toUpperCase().indexOf(item) > -1) {
-                                outTotals.push(totals[obj]);
+                    var items = orders[order].items;
+
+                    for (var i = 0, len = items.length; i < len; i++) {
+                        var currentItem = items[i];
+
+                        //add items to array if there is more than one ordered in quantity
+                        //will cause issues at scale for large orders of the same product
+                        //issue #2 resides here
+                        if (currentItem.hasOwnProperty('quantity')) {
+                            if (currentItem.quantity > 1) {
+                                currentItem.quantity--;
+                                items.push(currentItem);
+                                len++;
                             }
+                        }
+
+                        //split sku by categorized delimiter
+                        var product = currentItem.sku.split('-');
+                        var productCategory = product[0];
+                        var productID = product[1];
+
+                        //loop through options attributes of products for nested products
+                        if (productCategory == cfg.nestedItemSKUPrefix) {
+
+                            var nestedItems = ExtractNestedItemsFromOptionsAttribute(currentItem);
+                            if (nestedItems && nestedItems.length > 0) {
+                                items.splice(items.indexOf(currentItem), 1);
+                                items = items.concat(nestedItems);
+                                len += nestedItems.length;
+                            }
+
+                        } else if (productCategory != cfg.ignoredItemsSKUPrefix) {
+
+                            currentItem = AdjustWeightsOfItemsWithWeightOption(currentItem);
+                            currentItem = AdjustWeightsOfSpecialItems(currentItem, productCategory);
+                            totals = AddNewItemsToTotalsArray(currentItem, productCategory);
+                            totals = SumProductCounts(productID, productCategory, totals)
+
+                            currentItem = ConvertWeightUnits(currentItem);
+
+                            //adds weight to total
+                            totals[productCategory].total_weight += Number(currentItem.weight.value);
                         }
                     }
 
-                    return outTotals;
-                };
+                }
 
-                return totaling;
-            }]);
+                return ArraySortByProductKey(totals, cfg.productKey);
+            }
+        }
+    }
 
-//TODO pull this extension method
-String.prototype.isNumeric = function() {
-    return !isNaN(parseFloat(this)) && isFinite(this);
-};
+
+    function ExtractNestedItemsFromOptionsAttribute(currentItem){
+        var additionalItems = [];
+
+        for (var option in currentItem.options) {
+
+            if (currentItem.options.hasOwnProperty(option)) {
+                var itemOption = currentItem.options[option];
+
+                var regex = new RegExp(cfg.specialCase, 'gi'); //case insensitive
+                if (itemOption && itemOption.name.match(regex)) {
+
+                    var itemCode = Object.keys(cfg.productKey).filter(function (key) {
+                        return cfg.productKey[key] === itemOption.value
+                    })[0];
+
+                    additionalItems.push({
+                        name: itemOption.value,
+                        sku: itemCode,
+                        weight: {
+                            value: cfg.defaultProductWeight,
+                            units: cfg.defaultProductUnits
+                        },
+                        options: []
+                    });
+
+                }
+            }
+        }
+
+        return additionalItems;
+    }
+
+
+    function AdjustWeightsOfItemsWithWeightOption(currentItem) {
+        //set weight from attribute if it exists
+        for (var opt in currentItem.options) {
+            if (currentItem.options.hasOwnProperty(opt) && opt.hasOwnProperty(name)){
+                if (currentItem.options[opt].name.toLowerCase() == "weight") {
+                    var w = currentItem.options[opt].value.split(' ');
+                    currentItem.weight.value = w[0];
+                    currentItem.weight.units = w[1];
+                }
+            }
+        }
+
+        return currentItem;
+    }
+
+    //special item value/units change
+    function AdjustWeightsOfSpecialItems(currentItem, productCategory){
+        if (productCategory == cfg.specialItemSKUPrefix ) {
+            if (currentItem.weight.units == cfg.specialItemWeightUnits)
+                currentItem.weight.value = cfg.specialItemNewWeight;
+        }
+
+        return currentItem;
+    }
+
+    function AddNewItemsToTotalsArray(totals, productCategory){
+        //if sku not already in final array add it
+        if (!totals[productCategory]) {
+            var itemName = cfg.productKey[productCategory] || productCategory;
+
+            totals[productCategory] = {
+                item_name: itemName,
+                ounce_count: 0,
+                pound_count: 0,
+                sub_count: 0,
+                total_weight: 0,
+                item_weight_units: cfg.displayWeightAs
+            };
+        }
+        
+        return totals;
+    }
+
+    function SumProductCounts(productID, productCategory, totals){
+        //sum different product types by second half of sku naming convention
+        if (productID) {
+            //first char is number vs. letter (e.g. XXXX-0000 vs. XXXX-A000)
+            var firstChar = productID.charAt(0);
+            if (firstChar.isNumeric()) {
+                currentItem.weight.units == "ounces" || currentItem.weight.units == "oz" ? totals[productCategory].ounce_count++ : totals[productCategory].pound_count++;
+            } else {
+                totals[productCategory].sub_count++;
+            }
+        } else { //no second half exists
+            totals[productCategory].ounce_count++
+        }
+
+        return totals;
+    }
+
+    function ConvertWeightUnits(currentItem){
+        //convert ounces to pounds if filter is set to lbs
+        if ((currentItem.weight.units == "ounces" || currentItem.weight.units == "oz") && cfg.displayWeightAs == "lbs") {
+            currentItem.weight.value = Number(currentItem.weight.value) / 16;
+        }
+
+        return currentItem;
+    }
+
+    //sort array based on product key order
+    function ArraySortByProductKey(totals, itemKey){
+        var outTotals = [];
+        for (var item in itemKey) {
+            for (var obj in totals) {
+                if (obj.toUpperCase().indexOf(item) > -1) {
+                    outTotals.push(totals[obj]);
+                }
+            }
+        }
+
+        return outTotals;
+    }
+
+    String.prototype.isNumeric = function() {
+        return !isNaN(parseFloat(this)) && isFinite(this);
+    };
+
+    angular.module('totals')
+        .factory('TotalingService', TotalingService);
+})();
