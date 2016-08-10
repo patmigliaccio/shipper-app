@@ -1,16 +1,6 @@
 (function(){
     'use strict';
 
-    TotalsConfig.$inject = ['$stateProvider'];
-    function TotalsConfig($stateProvider){
-        $stateProvider
-            .state('totals', {
-                url: "/totals",
-                templateUrl: "app/totals/totals-list.tpl.html",
-                controller: "TotalsCtrl as tc"
-            });
-    }
-
     TotalsCtrl.$inject = ['OrdersService', 'TotalingService', 'StatusFactory', 'usSpinnerService'];
     function TotalsCtrl(OrdersService, TotalingService, StatusFactory, usSpinnerService){
         var tc = this;
@@ -26,8 +16,7 @@
             });
     }
 
-    angular.module('totals', [])
-        .config(TotalsConfig)
+    angular.module('totals')
         .controller('TotalsCtrl', TotalsCtrl);
 
 })();

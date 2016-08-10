@@ -1,4 +1,7 @@
 'use strict';
 
-require('./orders');
+require('./ordersConfig');
+require('./OrderFactory');
+require('./OrderItemFactory');
 require('./OrdersService');
+require('./ordersController');

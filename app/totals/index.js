@@ -1,4 +1,6 @@
 'use strict';
 
-require('./totals');
+require('./totalsConfig');
+require('./TotalFactory');
 require('./TotalingService');
+require('./totalsController');

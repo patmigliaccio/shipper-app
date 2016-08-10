@@ -1,20 +1,6 @@
 (function(){
     'use strict';
 
-    OrdersConfig.$inject = ['$stateProvider'];
-    function OrdersConfig($stateProvider){
-        $stateProvider
-            .state('orders', {
-                url: "/orders",
-                params: {
-                    status: null
-                },
-                templateUrl: "app/orders/orders-list.tpl.html",
-                controller: "OrdersCtrl as oc",
-                resolve: OrdersCtrl.resolve
-            });
-    }
-
     OrdersCtrl.$inject = ['status', 'OrdersService', 'StatusFactory', 'usSpinnerService'];
     function OrdersCtrl(status, OrdersService, StatusFactory, usSpinnerService){
         var oc = this;
@@ -51,17 +37,7 @@
         //TODO add export function that simplifies oc.orders array
     }
 
-    OrdersCtrl.resolve = {
-        status: ['$stateParams', 'StatusFactory', function($stateParams, StatusFactory){
-            return StatusFactory.getAll()
-                        .then(function(){
-                            return StatusFactory.getByValue($stateParams.status); //if falsy returns default status
-                        });
-        }]
-    }
-
-    angular.module('orders', [])
-        .config(OrdersConfig)
+    angular.module('orders')
         .controller('OrdersCtrl', OrdersCtrl);
 
 })();
