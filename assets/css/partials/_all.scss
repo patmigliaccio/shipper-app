@@ -1,3 +1,9 @@
-@import "_form-elements";
-@import "nav";
+%buttons {
+  font-weight: 600;
+  text-transform: uppercase;
+  border-radius: 0;
+}
+
+@import "form-elements";
+@import "sidebar";
 @import "orders";

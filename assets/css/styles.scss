@@ -5,11 +5,13 @@
 $footer-height: 60px;
 
 html, body{
+  display: inline-flex;
+  width: 100%;
   height: 100%;
 }
 
 body{
-  background: url('../images/sleeve.png') repeat-x center center fixed #fcfbfa;
+
 }
 
 h3{
@@ -22,22 +24,27 @@ input[type=text], input[type=password]{
 
 .main-container {
   position: relative;
-  min-height: 100%;
-  padding-right: ($main-width - $inner-width)/2;
-  padding-left: ($main-width - $inner-width)/2;
+  width: 100%;
   padding-bottom: $spacer * 2;
-  max-width: $main-width;
-  margin: auto;
 
   background-color: #fff;
 }
 
 .header {
-  margin-top: $spacer * 2;
-  margin-bottom: $spacer;
+  padding: 20px 0px;
+  background-color: $color-main-dark;
+}
+
+.logo {
+  max-width: 300px;
+}
+
+.sidebar{
+  background-color: $color-grey;
 }
 
 .content{
+  margin-top: 20px;
   margin-bottom: $footer-height;
 }
 

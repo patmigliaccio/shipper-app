@@ -17,32 +17,25 @@
     <title>ShipStation Order Manager</title>
 </head>
 <body>
-<div class="row main-container" ng-controller="AppCtrl as ac">
-        <div class="row header">
-            <a ui-sref="home">
-                <h2 class="col-xs-12 col-sm-4 col-md-4 col-lg-4">ShipStation App</h2>
-            </a>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-6 col-lg-8">
-                <ul class="row text-center nav nav-pills">
-                    <li role="presentation" ui-sref-active="active" class="col-xs-12 col-sm-6 col-md-6 col-lg-3"><a ui-sref="orders">Orders</a></li>
-                    <li role="presentation" ui-sref-active="active" class="col-xs-12 col-sm-6 col-md-6 col-lg-3"><a ui-sref="totals">Totals</a></li>
-                </ul>
+<div class="main-container" ng-controller="AppCtrl as ac">
+        <div class="col-lg-12 header">
+            <div class="col-lg-3">
+                <a ui-sref="home">
+                    <img class="col-lg-12 logo" src="assets/images/logo.png" />
+                </a>
             </div>
-
-            <div class="col-xs-12 col-sm-offset-4 col-sm-2 col-lg-offset-2 col-lg-2" ng-include=" 'app/login/login.tpl.html' "></div>
         </div>
 
-        <div class="content">
+        <div class="col-lg-3" ng-include=" 'app/sidebar/sidebar.tpl.html' "></div>
+
+        <div class="col-lg-9 content">
             <div ui-view></div>
         </div>
 
-        <span class="col-xs-12 loader" us-spinner spinner-key="spinner"></span>
+        <span class="col-xs-12 col-lg-offset-3 col-lg-9 loader" us-spinner spinner-key="spinner"></span>
 
         <div class="footer">
-            <p class="col-xs-12">GitHub <a href="https://github.com/pmigliaccio" target="_blank">@pmigliaccio</a></p>
+
         </div>
     </div>
 </body>

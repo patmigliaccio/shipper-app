@@ -14,37 +14,52 @@
 @media (min-width: 768px) {
   .text-sm-left {
     text-align: left; }
+
   .text-sm-right {
     text-align: right; }
+
   .text-sm-center {
     text-align: center; }
+
   .text-sm-justify {
     text-align: justify; } }
-
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {
   .text-md-left {
     text-align: left; }
+
   .text-md-right {
     text-align: right; }
+
   .text-md-center {
     text-align: center; }
+
   .text-md-justify {
     text-align: justify; } }
-
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
   .text-lg-left {
     text-align: left; }
+
   .text-lg-right {
     text-align: right; }
+
   .text-lg-center {
     text-align: center; }
+
   .text-lg-justify {
     text-align: justify; } }
+.btn, ul.nav > li a {
+  font-weight: 600;
+  text-transform: uppercase;
+  border-radius: 0; }
 
 select, button, input {
-  margin-top: 10px; }
+  margin-top: 10px;
+  margin-bottom: 10px; }
+
+.btn {
+  padding: 10px 15px; }
 
 .text-xs-left {
   text-align: left; }
@@ -62,67 +77,68 @@ select, button, input {
 @media (min-width: 768px) {
   .text-sm-left {
     text-align: left; }
+
   .text-sm-right {
     text-align: right; }
+
   .text-sm-center {
     text-align: center; }
+
   .text-sm-justify {
     text-align: justify; } }
-
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {
   .text-md-left {
     text-align: left; }
+
   .text-md-right {
     text-align: right; }
+
   .text-md-center {
     text-align: center; }
+
   .text-md-justify {
     text-align: justify; } }
-
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
   .text-lg-left {
     text-align: left; }
+
   .text-lg-right {
     text-align: right; }
+
   .text-lg-center {
     text-align: center; }
+
   .text-lg-justify {
     text-align: justify; } }
-
 ul.nav {
-  margin-top: 8px;
-  margin-bottom: 1.618em;
-  border-bottom: 0; }
+  border-bottom: 0;
+  padding-right: 0; }
 
 ul.nav > li a {
-  font-weight: 200;
-  text-transform: uppercase;
-  color: #2f2f31;
-  background: #fff !important;
-  font-size: 110%;
-  letter-spacing: 0.1em;
-  padding: 3px 17px 3px 17px;
-  border: 1px solid #fff;
-  border-radius: 0;
-  -webkit-transition: all 0.3s ease 0s;
-  /* Chrome, Opera 15+, Safari 3.1+ */
-  -ms-transition: all 0.3s ease 0s;
-  /* IE 9 */
-  transition: all 0.3s ease 0s; }
-
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #e7e7e7;
+  /*@include transition(all 0.3s ease 0s);*/ }
 ul.nav > li:hover a, ul.nav > li.active a {
-  border: 1px solid #AAAEB4 !important;
-  color: #82858a !important;
-  font-weight: 200;
-  background-color: #fff !important; }
-
-ul.nav > li.active a {
-  color: #232323 !important; }
+  color: #fff;
+  border-top: 1px solid #0084c8;
+  background-color: #0199e7;
+  /* Fallback */
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#0084c8), to(#0199e7));
+  background-image: -webkit-linear-gradient(top, #0084c8, #0199e7);
+  background-image: -moz-linear-gradient(top, #0084c8, #0199e7);
+  background-image: -ms-linear-gradient(top, #0084c8, #0199e7);
+  background-image: -o-linear-gradient(top, #0084c8, #0199e7);
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#0084c8', EndColorStr='#0199e7')"; }
 
 .nav-pills > li + li {
   margin: 0; }
+
+.login {
+  margin-top: 75px;
+  display: inline-block;
+  width: 100%; }
 
 .orders-list {
   margin-top: 20px; }
@@ -138,10 +154,9 @@ ul.nav > li.active a {
   border-top: 1px solid #ddd; }
 
 html, body {
+  display: inline-flex;
+  width: 100%;
   height: 100%; }
-
-body {
-  background: url("../images/sleeve.png") repeat-x center center fixed #fcfbfa; }
 
 h3 {
   margin-top: 10px; }
@@ -151,19 +166,22 @@ input[type=text], input[type=password] {
 
 .main-container {
   position: relative;
-  min-height: 100%;
-  padding-right: 67.5px;
-  padding-left: 67.5px;
+  width: 100%;
   padding-bottom: 3.236em;
-  max-width: 1095px;
-  margin: auto;
   background-color: #fff; }
 
 .header {
-  margin-top: 3.236em;
-  margin-bottom: 1.618em; }
+  padding: 20px 0px;
+  background-color: #0084c8; }
+
+.logo {
+  max-width: 300px; }
+
+.sidebar {
+  background-color: #fcfbfa; }
 
 .content {
+  margin-top: 20px;
   margin-bottom: 60px; }
 
 .footer {
@@ -173,3 +191,5 @@ input[type=text], input[type=password] {
   height: 60px;
   margin-top: -60px;
   padding-top: 60px; }
+
+/*# sourceMappingURL=styles.css.map */
