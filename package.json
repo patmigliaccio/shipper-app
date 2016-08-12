@@ -19,6 +19,8 @@
     "angular-cookies": "^1.4.9",
     "angular-resource": "^1.5.7",
     "angular-sanitize": "^1.4.9",
+    "express": "^4.14.0",
+    "path": "^0.12.7",
     "spin": "0.0.1"
   },
   "devDependencies": {
