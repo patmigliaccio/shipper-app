@@ -8,7 +8,7 @@
         return $resource(root, {},
             {
                 get: {
-                    url: 'safe/orders-08-03-2016.json', //root + '/:id',
+                    url: 'data/orders.json', //root + '/:id',
                     method: 'GET',
                     params: {
                         id: '@id'
