@@ -34,7 +34,7 @@ module.exports.initModulesClientRoutes = function (app) {
     app.use('/', express.static(path.resolve('./public')));
 
     // Temporary for migration to Node TODO full migrate and remove
-    config.folders.client = config.folders.client.concat(['/assets/css/', '/assets/images/', '/app/', '/data/']);
+    config.folders.client = config.folders.client.concat(['/app/', '/data/']);
 
     // Globbing static routing
     config.folders.client.forEach(function (staticPath) {

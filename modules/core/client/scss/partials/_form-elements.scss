@@ -1,6 +1,16 @@
+%buttons {
+  font-weight: 600;
+  text-transform: uppercase;
+  border-radius: 0;
+}
+
 select, button, input{
   margin-top: 10px;
   margin-bottom: 10px;
+
+  .fa {
+    padding-left: 5px;
+  }
 }
 
 .btn{

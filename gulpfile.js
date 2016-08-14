@@ -107,6 +107,11 @@ gulp.task('cssmin', function () {
         .pipe(gulp.dest('public/dist'));
 });
 
+gulp.task('fonts', function() {
+    return gulp.src('./node_modules/font-awesome/fonts/**.*')
+        .pipe(gulp.dest('public/fonts'))
+});
+
 // Sass task
 gulp.task('sass', function () {
     return gulp.src(defaultAssets.client.sass)
@@ -159,5 +164,5 @@ gulp.task('default', function (done) {
 
 // Run the project in production mode
 gulp.task('prod', function (done) {
-    runSequence('templateCache', 'build', 'env:prod', 'lint', 'imagemin', 'watch', done);
+    runSequence('templateCache', 'build', 'env:prod', 'lint', 'imagemin', 'fonts', 'watch', done);
 });

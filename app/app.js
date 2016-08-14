@@ -9,6 +9,7 @@ angular.module('ShipperApp', [
     'ngResource',
     'ngCsv',
     'ngCookies',
+    'ngAnimate',
     'angularSpinner',
     'angular-storage',
     'services.interceptor',

@@ -1,10 +1,10 @@
 <div class="row">
-    <h3 class="col-lg-4">Shipments</h3>
-    <div class="col-lg-4">
+    <h3 class="col-md-12 col-lg-4">Shipments</h3>
+    <div class="col-md-6 col-lg-4">
         <select class="form-control" ng-options="status.name for status in oc.statuses" ng-change="oc.statusChange()" ng-model="oc.status"></select>
     </div>
-    <div class="col-lg-offset-2 col-lg-2 text-right">
-        <button class="col-xs-12 btn btn-info" type="button" ng-csv="oc.orders" filename="Orders_Report.csv">Export</button>
+    <div class="col-md-6 col-lg-offset-2 col-lg-2 text-right">
+        <button class="col-xs-12 btn btn-info" type="button" ng-csv="oc.orders" filename="Orders_Report.csv">Export <i class="fa fa-download"></i></button>
     </div>
 </div>
 

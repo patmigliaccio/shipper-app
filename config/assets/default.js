@@ -2,6 +2,7 @@
 
 module.exports = {
     client: {
+        //TODO setup lib
         lib: {
             css: [
 
@@ -12,6 +13,7 @@ module.exports = {
             tests: ['public/lib/angular-mocks/angular-mocks.js']
         },
         css: [
+            'public/lib/dist/css/font-awesome.css', //manually added
             'modules/*/client/css/*.css'
         ],
         less: [

@@ -1,23 +1,27 @@
 {% extends 'layout.server.view.html' %}
 
 {% block content %}
-<div class="main-container" ng-controller="AppCtrl as ac">
-    <header class="col-lg-12">
-        <div class="col-lg-3">
+<div class="container" ng-controller="AppCtrl as ac">
+    <header class="row">
+        <div class="text-center col-md-3">
             <a ui-sref="home">
-                <img class="col-lg-12 logo" src="dist/img/core/client/img/logo.png" />
+                <img class="col-md-12 logo" src="dist/img/core/client/img/logo.png" />
             </a>
         </div>
     </header>
 
-    <div class="col-lg-3" ng-include=" 'app/sidebar/sidebar.tpl.html' "></div>
+    <section class="row">
+        <div class="col-md-3" ng-include=" 'app/sidebar/sidebar.tpl.html' "></div>
 
-    <div class="col-lg-9 content">
-        <div ui-view></div>
-    </div>
+        <div class="col-md-9 content">
+            <div ui-view></div>
+        </div>
+    </section>
 
-    <span class="col-xs-12 col-lg-offset-3 col-lg-9 loader" us-spinner spinner-key="spinner"></span>
-
-    <footer></footer>
+    <footer class="row">
+        <p class="col-xs-12">
+            <i class="fa fa-wrench"></i> by <a href="https://github.com/pmigliaccio" target="_blank">@pmigliaccio</a>
+        </p>
+    </footer>
 </div>
 {% endblock %}

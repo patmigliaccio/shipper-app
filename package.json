@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "angular": "^1.5.7",
-    "angular-animate": "^1.4.9",
+    "angular-animate": "^1.5.8",
     "angular-cookies": "^1.4.9",
     "angular-modal-service": "^0.10.1",
     "angular-resource": "^1.5.7",
@@ -43,6 +43,7 @@
     "browserify": "^13.0.1",
     "eslint": "^3.3.0",
     "eslint-config-airbnb": "^10.0.1",
+    "font-awesome": "^4.6.3",
     "gulp": "^3.9.1",
     "gulp-angular-templatecache": "^2.0.0",
     "gulp-autoprefixer": "^3.1.1",

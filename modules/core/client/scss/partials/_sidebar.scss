@@ -29,7 +29,13 @@ ul.nav > li {
 }
 
 .login {
-  margin-top: 75px;
   display: inline-block;
   width: 100%;
+}
+
+//min -md- viewport
+@media (min-width: 992px) {
+  .login {
+    margin-top: 200px;
+  }
 }
