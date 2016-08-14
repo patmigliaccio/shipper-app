@@ -13,6 +13,7 @@ angular.module('ShipperApp', [
     'angular-storage',
     'services.interceptor',
     'services.authentication',
+    'config',
     'home',
     'login',
     'orders',
@@ -66,4 +67,3 @@ require('./resources');
 require('./home');
 require('./login');
 require('./orders');
-require('./totals');

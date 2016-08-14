@@ -2,10 +2,13 @@
 (function (){
     'use strict';
 
-    var cfg = require('./../config');
+    angular
+        .module('totals.service')
+        .factory('TotalsService', TotalsService);
 
-    TotalingService.$inject = ['Order', 'Total'];
-    function TotalingService(Order, Total){
+    TotalsService.$inject = ['Order', 'Total', 'ConfigSettings'];
+
+    function TotalsService(Order, Total, cfg){
         var totals = [];
 
         return {
@@ -64,10 +67,4 @@
         return sorted;
     }
 
-    // String.prototype.isNumeric = function() {
-    //     return !isNaN(parseFloat(this)) && isFinite(this);
-    // };
-
-    angular.module('totals')
-        .factory('TotalingService', TotalingService);
 })();

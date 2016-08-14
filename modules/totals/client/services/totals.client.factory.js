@@ -1,6 +1,10 @@
 (function (){
     'use strict';
 
+    angular
+        .module('totals')
+        .factory('Total', TotalFactory);
+
     function TotalFactory(){
         var Total = function(item){
             this.itemName = item.name;
@@ -10,15 +14,15 @@
             this.totalWeight = 0;
             this.units = item.units;
 
-            AddToWeight(item);
-            SumProductCounts(item);
+            addToWeight(item);
+            sumProductCounts(item);
         };
 
-        Total.prototype.AddToWeight = function (item){
+        Total.prototype.addToWeight = function (item){
             this.totalWeight += item.weight;
         };
 
-        Total.prototype.SumProductCounts = function(item){
+        Total.prototype.sumProductCounts = function(item){
             //sum different product types by second half of sku naming convention
             if (item.id) {
                 //first char is number vs. letter (e.g. XXXX-0000 vs. XXXX-A000)
@@ -36,6 +40,4 @@
         return Total;
     }
 
-    angular.module('totals')
-        .factory('Total', TotalFactory);
 })();

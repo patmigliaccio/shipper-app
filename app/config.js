@@ -1,6 +1,10 @@
 (function(){
     'use strict';
 
+    angular
+        .module('config', [])
+        .constant('ConfigSettings', config);
+
     var config = {
         productKey: { //product sku prefixes with corresponding items
             "XXXX":"Product #1"
@@ -21,7 +25,7 @@
         defaultProductWeight: "1", //sets a default weight for new nested products added (default: 1)
         defaultProductUnits: "ounces",//sets a default unit value for new nested products added (default: ounces)
         displayWeightAs: "lbs" //converts totals to this unit of measurement (default: lbs)
-    }
+    };
 
     module.exports = config;
 })();
