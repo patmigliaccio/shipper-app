@@ -6,6 +6,7 @@
 exports.renderIndex = function (req, res) {
 
     res.render('modules/core/server/views/index', {
+        cssFiles: ['dist/application.min.css'],
         jsFiles: ['dist/application.min.js']
     });
 };

@@ -1,6 +1,6 @@
-@import "modules/all";
-@import "vendors/all";
-@import "partials/all";
+@import "modules/_all";
+@import "vendors/_all";
+@import "partials/_all";
 
 $footer-height: 60px;
 
@@ -30,8 +30,8 @@ input[type=text], input[type=password]{
   background-color: #fff;
 }
 
-.header {
-  padding: 20px 0px;
+header {
+  padding: 20px 0;
   background-color: $color-main-dark;
 }
 
@@ -48,8 +48,7 @@ input[type=text], input[type=password]{
   margin-bottom: $footer-height;
 }
 
-.footer {
-  /*position: absolute;*/
+footer {
   bottom: 0;
   width: 100%;
   height: $footer-height;

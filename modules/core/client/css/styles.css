@@ -14,41 +14,35 @@
 @media (min-width: 768px) {
   .text-sm-left {
     text-align: left; }
-
   .text-sm-right {
     text-align: right; }
-
   .text-sm-center {
     text-align: center; }
-
   .text-sm-justify {
     text-align: justify; } }
+
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {
   .text-md-left {
     text-align: left; }
-
   .text-md-right {
     text-align: right; }
-
   .text-md-center {
     text-align: center; }
-
   .text-md-justify {
     text-align: justify; } }
+
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
   .text-lg-left {
     text-align: left; }
-
   .text-lg-right {
     text-align: right; }
-
   .text-lg-center {
     text-align: center; }
-
   .text-lg-justify {
     text-align: justify; } }
+
 .btn, ul.nav > li a {
   font-weight: 600;
   text-transform: uppercase;
@@ -77,41 +71,35 @@ select, button, input {
 @media (min-width: 768px) {
   .text-sm-left {
     text-align: left; }
-
   .text-sm-right {
     text-align: right; }
-
   .text-sm-center {
     text-align: center; }
-
   .text-sm-justify {
     text-align: justify; } }
+
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {
   .text-md-left {
     text-align: left; }
-
   .text-md-right {
     text-align: right; }
-
   .text-md-center {
     text-align: center; }
-
   .text-md-justify {
     text-align: justify; } }
+
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
   .text-lg-left {
     text-align: left; }
-
   .text-lg-right {
     text-align: right; }
-
   .text-lg-center {
     text-align: center; }
-
   .text-lg-justify {
     text-align: justify; } }
+
 ul.nav {
   border-bottom: 0;
   padding-right: 0; }
@@ -120,6 +108,7 @@ ul.nav > li a {
   border-top: 1px solid #fff;
   border-bottom: 1px solid #e7e7e7;
   /*@include transition(all 0.3s ease 0s);*/ }
+
 ul.nav > li:hover a, ul.nav > li.active a {
   color: #fff;
   border-top: 1px solid #0084c8;
@@ -127,8 +116,6 @@ ul.nav > li:hover a, ul.nav > li.active a {
   /* Fallback */
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#0084c8), to(#0199e7));
   background-image: -webkit-linear-gradient(top, #0084c8, #0199e7);
-  background-image: -moz-linear-gradient(top, #0084c8, #0199e7);
-  background-image: -ms-linear-gradient(top, #0084c8, #0199e7);
   background-image: -o-linear-gradient(top, #0084c8, #0199e7);
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#0084c8', EndColorStr='#0199e7')"; }
 
@@ -154,6 +141,8 @@ ul.nav > li:hover a, ul.nav > li.active a {
   border-top: 1px solid #ddd; }
 
 html, body {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
   display: inline-flex;
   width: 100%;
   height: 100%; }
@@ -170,8 +159,8 @@ input[type=text], input[type=password] {
   padding-bottom: 3.236em;
   background-color: #fff; }
 
-.header {
-  padding: 20px 0px;
+header {
+  padding: 20px 0;
   background-color: #0084c8; }
 
 .logo {
@@ -184,12 +173,9 @@ input[type=text], input[type=password] {
   margin-top: 20px;
   margin-bottom: 60px; }
 
-.footer {
-  /*position: absolute;*/
+footer {
   bottom: 0;
   width: 100%;
   height: 60px;
   margin-top: -60px;
   padding-top: 60px; }
-
-/*# sourceMappingURL=styles.css.map */

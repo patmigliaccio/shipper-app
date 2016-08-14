@@ -11,6 +11,7 @@ var _ = require('lodash'),
             'gulp-angular-templatecache': 'templateCache'
         }
     }),
+    pngquant = require('imagemin-pngquant'),
     runSequence = require('run-sequence'),
     path = require('path'),
     endOfLine = require('os').EOL;
@@ -117,6 +118,17 @@ gulp.task('sass', function () {
         .pipe(gulp.dest('./modules/'));
 });
 
+// Imagemin task
+gulp.task('imagemin', function () {
+    return gulp.src(defaultAssets.client.img)
+        .pipe(plugins.imagemin({
+            progressive: true,
+            svgoPlugins: [{ removeViewBox: false }],
+            use: [pngquant()]
+        }))
+        .pipe(gulp.dest('public/dist/img'));
+});
+
 // Angular template cache task
 gulp.task('templateCache', function () {
     return gulp.src(defaultAssets.client.views)
@@ -147,5 +159,5 @@ gulp.task('default', function (done) {
 
 // Run the project in production mode
 gulp.task('prod', function (done) {
-    runSequence('templateCache', 'build', 'env:prod', 'lint', 'watch', done);
+    runSequence('templateCache', 'build', 'env:prod', 'lint', 'imagemin', 'watch', done);
 });
