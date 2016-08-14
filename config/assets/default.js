@@ -18,15 +18,19 @@ module.exports = {
             'modules/*/client/less/*.less'
         ],
         sass: [
+            'assets/css/styles.scss', //LEGACY
+            'assets/css/**/*.scss', //LEGACY
             'modules/*/client/scss/*.scss'
         ],
         js: [
+            'app/app.js', //LEGACY
             'modules/core/client/app/config.js',
             'modules/core/client/app/init.js',
             'modules/*/client/*.js',
             'modules/*/client/**/*.js'
         ],
         img: [
+            'assets/images/logo.png', //LEGACY
             'modules/**/*/img/**/*.jpg',
             'modules/**/*/img/**/*.png',
             'modules/**/*/img/**/*.gif',
