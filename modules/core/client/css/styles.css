@@ -190,9 +190,16 @@ ul.nav > li:hover a, ul.nav > li.active a {
   border-top: 1px solid #ddd; }
 
 body {
-  background: url("img/core/client/img/bg.png");
-  background-size: 15px;
-  background-repeat-y: no-repeat; }
+  /* bg (:before for IOS FIX) */ }
+  body:before {
+    background: #1e5799;
+    height: 15px;
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0; }
 
 h3 {
   margin-top: 15px; }

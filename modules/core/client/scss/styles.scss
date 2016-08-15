@@ -5,9 +5,18 @@ $spacer: 15px;
 $footer-height: 60px;
 
 body {
-  background: url('img/core/client/img/bg.png');
-  background-size: $spacer;
-  background-repeat-y: no-repeat;
+
+  /* bg (:before for IOS FIX) */
+  &:before{
+    background: $color-main-dark;
+    height: $spacer;
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
 }
 
 h3{
