@@ -153,6 +153,7 @@ angular.module('services.totaling', [])
                                 //convert ounces to pounds if filter is set to lbs
                                 if ((items[i].weight.units == "ounces" || items[i].weight.units == "oz") && weightFilter == "lbs") {
                                     items[i].weight.value = Number(items[i].weight.value) / 16;
+                                    items[i].weight.units = "lbs";
                                 }
 
                                 //adds weight to total
